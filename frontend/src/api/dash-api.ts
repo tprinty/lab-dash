@@ -2540,4 +2540,19 @@ export class DashApi {
             throw error;
         }
     }
+
+    // Sprint Tracker Widget methods
+    public static async getSprintData(itemId: string): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/sprint/data`, {
+                itemId
+            }, {
+                timeout: 30000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching sprint data:', error);
+            throw error;
+        }
+    }
 }

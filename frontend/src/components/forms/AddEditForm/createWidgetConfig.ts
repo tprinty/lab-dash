@@ -554,6 +554,42 @@ export const createWidgetConfig = async (
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
             displayName: data.displayName || 'Market'
         };
+    } else if (widgetType === ITEM_TYPE.SPRINT_WIDGET) {
+        // Sprint Tracker widget configuration
+        let encryptedToken = '';
+        let hasExistingToken = false;
+
+        if (existingItem?.config) {
+            hasExistingToken = !!existingItem.config._hasToken;
+        }
+
+        if (data.sprintToken && data.sprintToken !== '**********') {
+            if (!isEncrypted(data.sprintToken)) {
+                try {
+                    encryptedToken = await DashApi.encryptPassword(data.sprintToken);
+                } catch (error) {
+                    console.error('Error encrypting sprint token:', error);
+                }
+            } else {
+                encryptedToken = data.sprintToken;
+            }
+        }
+
+        const config: any = {
+            repos: data.sprintRepos || 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard',
+            refreshInterval: data.sprintRefreshInterval || 900000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'Sprint Tracker'
+        };
+
+        if (encryptedToken) {
+            config.token = encryptedToken;
+            config._hasToken = true;
+        } else if (hasExistingToken) {
+            config._hasToken = true;
+        }
+
+        return config;
     } else if (widgetType === ITEM_TYPE.CAMERA_WIDGET) {
         let encryptedPassword = '';
         let hasExistingPassword = false;

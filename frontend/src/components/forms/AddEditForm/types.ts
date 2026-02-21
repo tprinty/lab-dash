@@ -105,6 +105,11 @@ export type FormValues = {
     cameraSubtype?: string;
     cameraRotationInterval?: number;
 
+    // Sprint Tracker widget
+    sprintToken?: string;
+    sprintRepos?: string;
+    sprintRefreshInterval?: number;
+
     // GitHub widget
     githubToken?: string;
     githubRefreshInterval?: number;

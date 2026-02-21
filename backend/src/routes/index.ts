@@ -9,6 +9,7 @@ import { cameraRoute } from './camera.route';
 import { financeRoute } from './finance.route';
 import { marketRoute } from './market.route';
 import { githubRoute } from './github.route';
+import { sprintRoute } from './sprint.route';
 import { healthRoute } from './health.route';
 import { iconsRoute } from './icons.route';
 import { jellyfinRoute } from './jellyfin.route';
@@ -80,6 +81,9 @@ router.use('/camera', apiLimiter, cameraRoute);
 
 // GitHub routes
 router.use('/github', apiLimiter, githubRoute);
+
+// Sprint tracker routes
+router.use('/sprint', apiLimiter, sprintRoute);
 
 // Torrent client routes
 router.use('/qbittorrent', torrentApiLimiter, qbittorrentRoute);

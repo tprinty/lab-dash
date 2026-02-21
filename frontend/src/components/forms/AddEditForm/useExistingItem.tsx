@@ -250,6 +250,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             financeCsvPath: existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ? (existingItem?.config?.csvPath || '/home/tprinty/clawd/data/balances.csv') : '/home/tprinty/clawd/data/balances.csv',
             financeRefreshInterval: existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ? (existingItem?.config?.refreshInterval || 900000) : 900000,
 
+            // Sprint widget values
+            sprintToken: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET && existingItem?.config?._hasToken ? '**********' : '',
+            sprintRepos: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET ? (existingItem?.config?.repos || 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard') : 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard',
+            sprintRefreshInterval: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET ? (existingItem?.config?.refreshInterval || 900000) : 900000,
+
             // Market widget values
             marketRefreshInterval: existingItem?.type === ITEM_TYPE.MARKET_WIDGET ? (existingItem?.config?.refreshInterval || 300000) : 300000,
             ...(existingItem?.type === ITEM_TYPE.MARKET_WIDGET ? (() => {

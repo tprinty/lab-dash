@@ -71,6 +71,12 @@ export const WIDGET_OPTIONS = [
         description: 'Stock indices, crypto, and commodities at a glance'
     },
     {
+        id: ITEM_TYPE.SPRINT_WIDGET,
+        label: 'Sprint Tracker',
+        icon: FaChartLine,
+        description: 'Track sprint progress across GitHub repos'
+    },
+    {
         id: ITEM_TYPE.DUAL_WIDGET,
         label: 'Dual Widget',
         icon: PiSquareSplitVerticalFill,

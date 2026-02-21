@@ -62,7 +62,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 selectedWidgetType === ITEM_TYPE.DUAL_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.GITHUB_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.FINANCE_WIDGET ||
-                selectedWidgetType === ITEM_TYPE.MARKET_WIDGET
+                selectedWidgetType === ITEM_TYPE.MARKET_WIDGET ||
+                selectedWidgetType === ITEM_TYPE.SPRINT_WIDGET
             ))) {
                 if (selectedWidgetType === ITEM_TYPE.PIHOLE_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.ADGUARD_WIDGET ||
@@ -75,7 +76,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     selectedWidgetType === ITEM_TYPE.DUAL_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.GITHUB_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.FINANCE_WIDGET ||
-                    selectedWidgetType === ITEM_TYPE.MARKET_WIDGET) {
+                    selectedWidgetType === ITEM_TYPE.MARKET_WIDGET ||
+                    selectedWidgetType === ITEM_TYPE.SPRINT_WIDGET) {
                     formContext.setValue('showLabel', true);
                 } else {
                     formContext.setValue('showLabel', false);
@@ -437,6 +439,9 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
             } else if (data.widgetType === ITEM_TYPE.FINANCE_WIDGET) {
                 // Finance widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.FINANCE_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.SPRINT_WIDGET) {
+                // Sprint Tracker widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.SPRINT_WIDGET, data, existingItem, formContext);
             } else if (data.widgetType === ITEM_TYPE.GITHUB_WIDGET) {
                 // GitHub widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.GITHUB_WIDGET, data, existingItem, formContext);

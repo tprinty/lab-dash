@@ -140,7 +140,9 @@ export const getConnectionInfo = (item: DashboardItem) => {
         includeForks: config.includeForks,
         includeArchived: config.includeArchived,
         repoFilter: config.repoFilter,
-        excludeRepos: config.excludeRepos
+        excludeRepos: config.excludeRepos,
+        // Sprint widget properties
+        repos: config.repos
     };
 };
 
