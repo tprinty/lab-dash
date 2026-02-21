@@ -7,6 +7,7 @@ import { configRoute } from './config.route';
 import { delugeRoute } from './deluge.route';
 import { cameraRoute } from './camera.route';
 import { financeRoute } from './finance.route';
+import { marketRoute } from './market.route';
 import { githubRoute } from './github.route';
 import { healthRoute } from './health.route';
 import { iconsRoute } from './icons.route';
@@ -72,6 +73,7 @@ router.use('/network', apiLimiter, networkRoute);
 
 // Finance routes
 router.use('/finance', apiLimiter, financeRoute);
+router.use('/market', apiLimiter, marketRoute);
 
 // Camera routes
 router.use('/camera', apiLimiter, cameraRoute);

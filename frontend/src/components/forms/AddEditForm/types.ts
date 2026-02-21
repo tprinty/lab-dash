@@ -86,6 +86,16 @@ export type FormValues = {
     financeCsvPath?: string;
     financeRefreshInterval?: number;
 
+    // Market Widget
+    marketRefreshInterval?: number;
+    marketAsset__GSPC?: boolean;
+    marketAsset__DJI?: boolean;
+    marketAsset__IXIC?: boolean;
+    marketAsset__VIX?: boolean;
+    marketAsset_GC_F?: boolean;
+    marketAsset_SI_F?: boolean;
+    marketAsset_BTC_USD?: boolean;
+
     // Camera widget
     cameraHost?: string;
     cameraPort?: string;

@@ -539,6 +539,21 @@ export const createWidgetConfig = async (
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
             displayName: data.displayName || 'Finance'
         };
+    } else if (widgetType === ITEM_TYPE.MARKET_WIDGET) {
+        const enabledAssets: string[] = [];
+        const assetSymbols = ['^GSPC', '^DJI', '^IXIC', '^VIX', 'GC=F', 'SI=F', 'BTC-USD'];
+        assetSymbols.forEach(symbol => {
+            const key = `marketAsset_${symbol.replace(/[^a-zA-Z0-9]/g, '_')}`;
+            if ((data as any)[key] !== false) {
+                enabledAssets.push(symbol);
+            }
+        });
+        return {
+            refreshInterval: data.marketRefreshInterval || 300000,
+            enabledAssets,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'Market'
+        };
     } else if (widgetType === ITEM_TYPE.CAMERA_WIDGET) {
         let encryptedPassword = '';
         let hasExistingPassword = false;

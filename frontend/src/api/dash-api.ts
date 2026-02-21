@@ -2473,6 +2473,21 @@ export class DashApi {
         }
     }
 
+    // Market Widget methods
+    public static async getMarketData(enabledAssets?: string[]): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/market/data`, {
+                enabledAssets
+            }, {
+                timeout: 15000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching market data:', error);
+            throw error;
+        }
+    }
+
     // Camera Widget methods
     public static async getCameraSnapshot(params: {
         host: string;

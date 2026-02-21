@@ -15,6 +15,7 @@ export enum ITEM_TYPE {
     NETWORK_INFO_WIDGET = 'network-info-widget',
     FINANCE_WIDGET = 'finance-widget',
     CAMERA_WIDGET = 'camera-widget',
+    MARKET_WIDGET = 'market-widget',
     GITHUB_WIDGET = 'github-widget',
     DUAL_WIDGET = 'dual-widget',
     GROUP_WIDGET = 'group-widget',

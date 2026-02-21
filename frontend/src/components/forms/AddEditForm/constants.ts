@@ -5,6 +5,7 @@ import {
     Widgets as WidgetIcon
 } from '@mui/icons-material';
 import {
+    FaChartLine,
     FaClock,
     FaCloudSun,
     FaDollarSign,
@@ -62,6 +63,12 @@ export const WIDGET_OPTIONS = [
         label: 'Cameras',
         icon: FaVideo,
         description: 'Auto-rotating security camera feeds from NVR'
+    },
+    {
+        id: ITEM_TYPE.MARKET_WIDGET,
+        label: 'Market Ticker',
+        icon: FaChartLine,
+        description: 'Stock indices, crypto, and commodities at a glance'
     },
     {
         id: ITEM_TYPE.DUAL_WIDGET,
