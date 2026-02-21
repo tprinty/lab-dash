@@ -86,6 +86,15 @@ export type FormValues = {
     financeCsvPath?: string;
     financeRefreshInterval?: number;
 
+    // Camera widget
+    cameraHost?: string;
+    cameraPort?: string;
+    cameraUsername?: string;
+    cameraPassword?: string;
+    cameraChannels?: string;
+    cameraSubtype?: string;
+    cameraRotationInterval?: number;
+
     // GitHub widget
     githubToken?: string;
     githubRefreshInterval?: number;

@@ -33,6 +33,7 @@ import { SortableDateTimeWidget } from './sortable-items/widgets/SortableDateTim
 import { SortableDeluge } from './sortable-items/widgets/SortableDeluge';
 import { SortableDiskMonitor } from './sortable-items/widgets/SortableDiskMonitor';
 import { SortableDualWidget } from './sortable-items/widgets/SortableDualWidget';
+import { SortableCamera } from './sortable-items/widgets/SortableCamera';
 import { SortableFinance } from './sortable-items/widgets/SortableFinance';
 import { SortableGitHub } from './sortable-items/widgets/SortableGitHub';
 import { SortableGroupWidget } from './sortable-items/widgets/SortableGroupWidget';
@@ -687,6 +688,8 @@ export const DashboardGrid: React.FC = () => {
             return <SortableDiskMonitor key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.FINANCE_WIDGET:
             return <SortableFinance key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
+        case ITEM_TYPE.CAMERA_WIDGET:
+            return <SortableCamera key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.GITHUB_WIDGET:
             return <SortableGitHub key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.PIHOLE_WIDGET:
@@ -923,6 +926,8 @@ export const DashboardGrid: React.FC = () => {
                                         return <SortableDiskMonitor key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.FINANCE_WIDGET:
                                         return <SortableFinance key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
+                                    case ITEM_TYPE.CAMERA_WIDGET:
+                                        return <SortableCamera key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.GITHUB_WIDGET:
                                         return <SortableGitHub key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.PIHOLE_WIDGET:

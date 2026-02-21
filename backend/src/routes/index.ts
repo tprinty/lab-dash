@@ -5,6 +5,7 @@ import { appShortcutRoute } from './app-shortcut.route';
 import { authRoute } from './auth.route';
 import { configRoute } from './config.route';
 import { delugeRoute } from './deluge.route';
+import { cameraRoute } from './camera.route';
 import { financeRoute } from './finance.route';
 import { githubRoute } from './github.route';
 import { healthRoute } from './health.route';
@@ -71,6 +72,9 @@ router.use('/network', apiLimiter, networkRoute);
 
 // Finance routes
 router.use('/finance', apiLimiter, financeRoute);
+
+// Camera routes
+router.use('/camera', apiLimiter, cameraRoute);
 
 // GitHub routes
 router.use('/github', apiLimiter, githubRoute);

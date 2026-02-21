@@ -2473,6 +2473,27 @@ export class DashApi {
         }
     }
 
+    // Camera Widget methods
+    public static async getCameraSnapshot(params: {
+        host: string;
+        port: string;
+        username: string;
+        password: string;
+        channel: string;
+        subtype: string;
+    }): Promise<Blob> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/camera/snapshot`, params, {
+                timeout: 10000,
+                responseType: 'blob'
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching camera snapshot:', error);
+            throw error;
+        }
+    }
+
     // Network Info methods
     public static async getPublicIp(): Promise<{ ip: string }> {
         try {

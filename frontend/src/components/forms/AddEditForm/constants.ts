@@ -58,6 +58,12 @@ export const WIDGET_OPTIONS = [
         description: 'Bank account balances with trends'
     },
     {
+        id: ITEM_TYPE.CAMERA_WIDGET,
+        label: 'Cameras',
+        icon: FaVideo,
+        description: 'Auto-rotating security camera feeds from NVR'
+    },
+    {
         id: ITEM_TYPE.DUAL_WIDGET,
         label: 'Dual Widget',
         icon: PiSquareSplitVerticalFill,

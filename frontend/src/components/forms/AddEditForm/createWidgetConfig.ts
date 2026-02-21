@@ -539,6 +539,28 @@ export const createWidgetConfig = async (
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
             displayName: data.displayName || 'Finance'
         };
+    } else if (widgetType === ITEM_TYPE.CAMERA_WIDGET) {
+        let encryptedPassword = '';
+        let hasExistingPassword = false;
+        if (existingItem?.config) hasExistingPassword = !!existingItem.config._hasPassword;
+        if (data.cameraPassword && data.cameraPassword !== '**********') {
+            if (!isEncrypted(data.cameraPassword)) {
+                try { encryptedPassword = await DashApi.encryptPassword(data.cameraPassword); } catch (e) { console.error(e); }
+            } else { encryptedPassword = data.cameraPassword; }
+        }
+        const config: any = {
+            host: data.cameraHost || '192.168.2.10',
+            port: data.cameraPort || '554',
+            username: data.cameraUsername || 'admin',
+            channels: data.cameraChannels || '1,2,3,4',
+            subtype: data.cameraSubtype || '1',
+            rotationInterval: data.cameraRotationInterval || 10000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'Cameras'
+        };
+        if (encryptedPassword) { config.password = encryptedPassword; config._hasPassword = true; }
+        else if (hasExistingPassword) { config._hasPassword = true; }
+        return config;
     }
 
     return {};
