@@ -3,6 +3,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { AdGuardWidgetConfig } from './AdGuardWidgetConfig';
 import { DateTimeWidgetConfig } from './DateTimeWidgetConfig';
 import { DiskMonitorWidgetConfig } from './DiskMonitorWidgetConfig';
+import { FinanceWidgetConfig } from './FinanceWidgetConfig';
 import { DownloadClientWidgetConfig } from './DownloadClientWidgetConfig';
 import { DualWidgetConfig } from './DualWidgetConfig';
 import { GitHubWidgetConfig } from './GitHubWidgetConfig';
@@ -59,6 +60,8 @@ export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetCo
         return <SonarrWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.RADARR_WIDGET:
         return <RadarrWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.FINANCE_WIDGET:
+        return <FinanceWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.GITHUB_WIDGET:
         return <GitHubWidgetConfig formContext={formContext} />;
     default:

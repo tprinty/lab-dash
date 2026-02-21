@@ -60,7 +60,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 selectedWidgetType === ITEM_TYPE.SONARR_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.RADARR_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.DUAL_WIDGET ||
-                selectedWidgetType === ITEM_TYPE.GITHUB_WIDGET
+                selectedWidgetType === ITEM_TYPE.GITHUB_WIDGET ||
+                selectedWidgetType === ITEM_TYPE.FINANCE_WIDGET
             ))) {
                 if (selectedWidgetType === ITEM_TYPE.PIHOLE_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.ADGUARD_WIDGET ||
@@ -71,7 +72,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     selectedWidgetType === ITEM_TYPE.SONARR_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.RADARR_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.DUAL_WIDGET ||
-                    selectedWidgetType === ITEM_TYPE.GITHUB_WIDGET) {
+                    selectedWidgetType === ITEM_TYPE.GITHUB_WIDGET ||
+                    selectedWidgetType === ITEM_TYPE.FINANCE_WIDGET) {
                     formContext.setValue('showLabel', true);
                 } else {
                     formContext.setValue('showLabel', false);
@@ -427,6 +429,9 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
             } else if (data.widgetType === ITEM_TYPE.NETWORK_INFO_WIDGET) {
                 // Network Info widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.NETWORK_INFO_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.FINANCE_WIDGET) {
+                // Finance widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.FINANCE_WIDGET, data, existingItem, formContext);
             } else if (data.widgetType === ITEM_TYPE.GITHUB_WIDGET) {
                 // GitHub widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.GITHUB_WIDGET, data, existingItem, formContext);

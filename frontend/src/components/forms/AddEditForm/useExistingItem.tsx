@@ -29,7 +29,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
                                existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
                                existingItem?.type === ITEM_TYPE.GROUP_WIDGET ||
-                               existingItem?.type === ITEM_TYPE.GITHUB_WIDGET
+                               existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.FINANCE_WIDGET
             ? 'widget'
             : (existingItem?.type === ITEM_TYPE.BLANK_WIDGET ||
                existingItem?.type === ITEM_TYPE.BLANK_ROW ||
@@ -57,7 +58,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.NOTES_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.SONARR_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
-                                  existingItem?.type === ITEM_TYPE.GITHUB_WIDGET
+                                  existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.FINANCE_WIDGET
             ? (existingItem?.type === ITEM_TYPE.TORRENT_CLIENT ? ITEM_TYPE.DOWNLOAD_CLIENT : existingItem?.type)
             : existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
                                     existingItem?.type === ITEM_TYPE.GROUP_WIDGET
@@ -74,7 +76,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.NOTES_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.SONARR_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
-                                  existingItem?.type === ITEM_TYPE.GITHUB_WIDGET)
+                                  existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.FINANCE_WIDGET)
             ? (existingItem?.config?.showLabel !== undefined ? existingItem.config.showLabel : true)
             : (existingItem?.showLabel !== undefined ? existingItem.showLabel : false);
 
@@ -220,7 +223,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                     ? (existingItem?.config?.displayName || 'Network Info')
                     : existingItem?.type === ITEM_TYPE.GITHUB_WIDGET
                         ? (existingItem?.config?.displayName || 'GitHub')
-                        : 'Notes',
+                        : existingItem?.type === ITEM_TYPE.FINANCE_WIDGET
+                            ? (existingItem?.config?.displayName || 'Finance')
+                            : 'Notes',
             defaultNoteFontSize: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.defaultNoteFontSize || '16px') : '16px',
 
             // Network Info widget values
@@ -235,6 +240,10 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             githubIncludeArchived: existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ? (existingItem?.config?.includeArchived || false) : false,
             githubRepoFilter: existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ? (existingItem?.config?.repoFilter || '') : '',
             githubExcludeRepos: existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ? (existingItem?.config?.excludeRepos || '') : '',
+
+            // Finance widget values
+            financeCsvPath: existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ? (existingItem?.config?.csvPath || '/home/tprinty/clawd/data/balances.csv') : '/home/tprinty/clawd/data/balances.csv',
+            financeRefreshInterval: existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ? (existingItem?.config?.refreshInterval || 900000) : 900000,
 
             location: location,
             gauge1: systemMonitorGauges[0] || 'cpu',

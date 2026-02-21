@@ -2458,6 +2458,21 @@ export class DashApi {
         }
     }
 
+    // Finance Widget methods
+    public static async getFinanceData(csvPath?: string): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/finance/data`, {
+                csvPath
+            }, {
+                timeout: 10000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching finance data:', error);
+            throw error;
+        }
+    }
+
     // Network Info methods
     public static async getPublicIp(): Promise<{ ip: string }> {
         try {

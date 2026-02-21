@@ -7,6 +7,7 @@ import {
 import {
     FaClock,
     FaCloudSun,
+    FaDollarSign,
     FaDownload,
     FaFilm,
     FaGithub,
@@ -49,6 +50,12 @@ export const WIDGET_OPTIONS = [
         label: 'Download Client',
         icon: FaDownload,
         description: 'Manage torrent/usenet download activity'
+    },
+    {
+        id: ITEM_TYPE.FINANCE_WIDGET,
+        label: 'Finance',
+        icon: FaDollarSign,
+        description: 'Bank account balances with trends'
     },
     {
         id: ITEM_TYPE.DUAL_WIDGET,

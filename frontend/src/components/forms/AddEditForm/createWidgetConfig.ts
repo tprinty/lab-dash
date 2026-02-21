@@ -532,5 +532,14 @@ export const createWidgetConfig = async (
         return config;
     }
 
+    } else if (widgetType === ITEM_TYPE.FINANCE_WIDGET) {
+        return {
+            csvPath: data.financeCsvPath || '/home/tprinty/clawd/data/balances.csv',
+            refreshInterval: data.financeRefreshInterval || 900000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'Finance'
+        };
+    }
+
     return {};
 };

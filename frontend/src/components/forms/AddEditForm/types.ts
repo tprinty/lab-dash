@@ -82,6 +82,10 @@ export type FormValues = {
     refreshInterval?: number;
     showTargetHost?: boolean;
 
+    // Finance widget
+    financeCsvPath?: string;
+    financeRefreshInterval?: number;
+
     // GitHub widget
     githubToken?: string;
     githubRefreshInterval?: number;
