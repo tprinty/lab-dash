@@ -164,6 +164,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             torrentClientType: existingItem?.config?.clientType || DOWNLOAD_CLIENT_TYPE.QBITTORRENT,
             temperatureUnit: temperatureUnit,
             timezone: existingItem?.config?.timezone || '',
+            use24Hour: existingItem?.config?.use24Hour || false,
             adminOnly: existingItem?.adminOnly || false,
             isWol: existingItem?.config?.isWol || false,
             macAddress: existingItem?.config?.macAddress || '',
@@ -302,6 +303,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             showDiskUsage: existingItem?.config?.showDiskUsage !== false, // Default to true
             showSystemInfo: existingItem?.config?.showSystemInfo !== false, // Default to true
             showInternetStatus: existingItem?.config?.showInternetStatus !== false, // Default to true
+            showIP: existingItem?.config?.showIP ?? existingItem?.config?.showPublicIP ?? false,
+            ipDisplayType: existingItem?.config?.ipDisplayType || 'wan',
 
             // Disk monitor widget values
             selectedDisks: existingItem?.type === ITEM_TYPE.DISK_MONITOR_WIDGET ? (existingItem?.config?.selectedDisks || []) : [],
@@ -315,6 +318,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             top_temperatureUnit: 'fahrenheit',
             top_location: null,
             top_timezone: '',
+            top_use24Hour: false,
             top_gauge1: 'cpu',
             top_gauge2: 'temp',
             top_gauge3: 'ram',
@@ -322,6 +326,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             top_showDiskUsage: true,
             top_showSystemInfo: true,
             top_showInternetStatus: true,
+            top_showIP: false,
+            top_ipDisplayType: 'wan',
             top_selectedDisks: [],
             top_showIcons: true,
             top_layout: '2x2',
@@ -341,6 +347,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             bottom_temperatureUnit: 'fahrenheit',
             bottom_location: null,
             bottom_timezone: '',
+            bottom_use24Hour: false,
             bottom_gauge1: 'cpu',
             bottom_gauge2: 'temp',
             bottom_gauge3: 'ram',
@@ -348,6 +355,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             bottom_showDiskUsage: true,
             bottom_showSystemInfo: true,
             bottom_showInternetStatus: true,
+            bottom_showIP: false,
+            bottom_ipDisplayType: 'wan',
             bottom_selectedDisks: [],
             bottom_showIcons: true,
             bottom_layout: '2x2',
@@ -398,6 +407,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('top_showDiskUsage', topConfig.showDiskUsage !== false);
                         formContext.setValue('top_showSystemInfo', topConfig.showSystemInfo !== false);
                         formContext.setValue('top_showInternetStatus', topConfig.showInternetStatus !== false);
+                        formContext.setValue('top_showIP', topConfig.showIP ?? topConfig.showPublicIP ?? false);
+                        formContext.setValue('top_ipDisplayType', topConfig.ipDisplayType || 'wan');
                     }
 
                     // Handle top disk monitor widget
@@ -435,6 +446,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                     else if (topWidget.type === ITEM_TYPE.DATE_TIME_WIDGET) {
                         formContext.setValue('top_location', topConfig.location || null);
                         formContext.setValue('top_timezone', topConfig.timezone || '');
+                        formContext.setValue('top_use24Hour', topConfig.use24Hour || false);
                     }
                 }, 0);
             }
@@ -469,6 +481,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                         formContext.setValue('bottom_showDiskUsage', bottomConfig.showDiskUsage !== false);
                         formContext.setValue('bottom_showSystemInfo', bottomConfig.showSystemInfo !== false);
                         formContext.setValue('bottom_showInternetStatus', bottomConfig.showInternetStatus !== false);
+                        formContext.setValue('bottom_showIP', bottomConfig.showIP ?? bottomConfig.showPublicIP ?? false);
+                        formContext.setValue('bottom_ipDisplayType', bottomConfig.ipDisplayType || 'wan');
                     }
 
                     // Handle bottom disk monitor widget
@@ -506,6 +520,7 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                     else if (bottomWidget.type === ITEM_TYPE.DATE_TIME_WIDGET) {
                         formContext.setValue('bottom_location', bottomConfig.location || null);
                         formContext.setValue('bottom_timezone', bottomConfig.timezone || '');
+                        formContext.setValue('bottom_use24Hour', bottomConfig.use24Hour || false);
                     }
                 }, 0);
             }

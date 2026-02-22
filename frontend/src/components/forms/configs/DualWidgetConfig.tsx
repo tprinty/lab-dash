@@ -89,8 +89,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             '.MuiSvgIcon-root ': {
                 fill: theme.palette.text.primary,
             },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+            '&:hover fieldset': { borderColor: 'primary.main' },
+            '&.Mui-focused fieldset': { borderColor: 'primary.main', },
         },
         width: '100%',
         minWidth: isMobile ? '50vw' : '20vw',
@@ -98,11 +98,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
         },
         '& .MuiMenuItem-root.Mui-selected': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${'primary.main'} !important`,
             color: 'white',
         },
         '& .MuiMenuItem-root.Mui-selected:hover': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${'primary.main'} !important`,
             color: 'white',
         }
     };
@@ -162,7 +162,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         networkInterface: topConfig.networkInterface || '',
                         showDiskUsage: topConfig.showDiskUsage !== false,
                         showSystemInfo: topConfig.showSystemInfo !== false,
-                        showInternetStatus: topConfig.showInternetStatus !== false
+                        showInternetStatus: topConfig.showInternetStatus !== false,
+                        showIP: topConfig.showIP ?? topConfig.showPublicIP ?? false,
+                        ipDisplayType: topConfig.ipDisplayType || 'wan'
                     };
                     formContext.setValue('top_temperatureUnit', topConfig.temperatureUnit || 'fahrenheit');
                     formContext.setValue('top_gauge1', gauges[0] || 'cpu');
@@ -172,6 +174,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     formContext.setValue('top_showDiskUsage', topConfig.showDiskUsage !== false);
                     formContext.setValue('top_showSystemInfo', topConfig.showSystemInfo !== false);
                     formContext.setValue('top_showInternetStatus', topConfig.showInternetStatus !== false);
+                    formContext.setValue('top_showIP', topConfig.showIP ?? topConfig.showPublicIP ?? false);
+                    formContext.setValue('top_ipDisplayType', topConfig.ipDisplayType || 'wan');
                 }
                 else if (existingTopWidgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
                     topWidgetFields = {
@@ -288,7 +292,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         networkInterface: bottomConfig.networkInterface || '',
                         showDiskUsage: bottomConfig.showDiskUsage !== false,
                         showSystemInfo: bottomConfig.showSystemInfo !== false,
-                        showInternetStatus: bottomConfig.showInternetStatus !== false
+                        showInternetStatus: bottomConfig.showInternetStatus !== false,
+                        showIP: bottomConfig.showIP ?? bottomConfig.showPublicIP ?? false,
+                        ipDisplayType: bottomConfig.ipDisplayType || 'wan'
                     };
                     formContext.setValue('bottom_temperatureUnit', bottomConfig.temperatureUnit || 'fahrenheit');
                     formContext.setValue('bottom_gauge1', gauges[0] || 'cpu');
@@ -298,6 +304,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                     formContext.setValue('bottom_showDiskUsage', bottomConfig.showDiskUsage !== false);
                     formContext.setValue('bottom_showSystemInfo', bottomConfig.showSystemInfo !== false);
                     formContext.setValue('bottom_showInternetStatus', bottomConfig.showInternetStatus !== false);
+                    formContext.setValue('bottom_showIP', bottomConfig.showIP ?? bottomConfig.showPublicIP ?? false);
+                    formContext.setValue('bottom_ipDisplayType', bottomConfig.ipDisplayType || 'wan');
                 }
                 else if (existingBottomWidgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
                     bottomWidgetFields = {
@@ -405,6 +413,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             // Handle timezone
             if (fields.timezone !== undefined) {
                 formContext.setValue(getFieldName(position, 'timezone'), fields.timezone);
+            }
+
+            // Handle use24Hour
+            if (fields.use24Hour !== undefined) {
+                formContext.setValue(getFieldName(position, 'use24Hour'), fields.use24Hour);
             }
         }
         else if (widgetType && widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
@@ -526,10 +539,12 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
         else if (widgetType === ITEM_TYPE.DATE_TIME_WIDGET) {
             defaultFields = {
                 location: null,
-                timezone: ''
+                timezone: '',
+                use24Hour: false
             };
             formContext.setValue(getFieldName(position, 'location'), null);
             formContext.setValue(getFieldName(position, 'timezone'), '');
+            formContext.setValue(getFieldName(position, 'use24Hour'), false);
         }
         else if (widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
             defaultFields = {
@@ -540,7 +555,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 networkInterface: '',
                 showDiskUsage: true,
                 showSystemInfo: true,
-                showInternetStatus: true
+                showInternetStatus: true,
+                showIP: false,
+                ipDisplayType: 'wan'
             };
             formContext.setValue(getFieldName(position, 'temperatureUnit'), 'fahrenheit');
             formContext.setValue(getFieldName(position, 'gauge1'), 'cpu');
@@ -550,6 +567,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             formContext.setValue(getFieldName(position, 'showDiskUsage'), true);
             formContext.setValue(getFieldName(position, 'showSystemInfo'), true);
             formContext.setValue(getFieldName(position, 'showInternetStatus'), true);
+            formContext.setValue(getFieldName(position, 'showIP'), false);
+            formContext.setValue(getFieldName(position, 'ipDisplayType'), 'wan');
         }
         else if (widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
             defaultFields = {
@@ -653,6 +672,10 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             // Ensure timezone is properly stored as a string, never null
             fields.timezone = timezone || '';
 
+            // Get use24Hour value
+            const use24Hour = formContext.getValues(getFieldName(position, 'use24Hour'));
+            fields.use24Hour = use24Hour || false;
+
             // Get location data and ensure it has proper structure
             const locationValue = formContext.getValues(getFieldName(position, 'location'));
 
@@ -686,6 +709,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             fields.showDiskUsage = formContext.getValues(getFieldName(position, 'showDiskUsage'));
             fields.showSystemInfo = formContext.getValues(getFieldName(position, 'showSystemInfo'));
             fields.showInternetStatus = formContext.getValues(getFieldName(position, 'showInternetStatus'));
+            fields.showIP = formContext.getValues(getFieldName(position, 'showIP'));
+            fields.ipDisplayType = formContext.getValues(getFieldName(position, 'ipDisplayType'));
         }
         else if (widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
             fields.selectedDisks = formContext.getValues(getFieldName(position, 'selectedDisks'));
@@ -946,10 +971,14 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 };
             }
 
+            // Get use24Hour value
+            const use24Hour = formContext.getValues(getFieldName(position, 'use24Hour')) || false;
+
             // Always include the timezone field, even if it's an empty string (never undefined or null)
             config = {
                 location: processedLocation,
-                timezone: timezone // This is already guaranteed to be a string (empty if not set)
+                timezone: timezone, // This is already guaranteed to be a string (empty if not set)
+                use24Hour: use24Hour
             };
         }
         else if (widgetType === ITEM_TYPE.SYSTEM_MONITOR_WIDGET) {
@@ -962,6 +991,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             const showDiskUsage = formContext.getValues(getFieldName(position, 'showDiskUsage'));
             const showSystemInfo = formContext.getValues(getFieldName(position, 'showSystemInfo'));
             const showInternetStatus = formContext.getValues(getFieldName(position, 'showInternetStatus'));
+            const showIP = formContext.getValues(getFieldName(position, 'showIP'));
+            const ipDisplayType = formContext.getValues(getFieldName(position, 'ipDisplayType'));
 
             config = {
                 temperatureUnit: temperatureUnit || 'fahrenheit',
@@ -973,7 +1004,9 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 networkInterface: networkInterface || fields.networkInterface || '',
                 showDiskUsage: showDiskUsage !== false,
                 showSystemInfo: showSystemInfo !== false,
-                showInternetStatus: showInternetStatus !== false
+                showInternetStatus: showInternetStatus !== false,
+                showIP: showIP || false,
+                ipDisplayType: ipDisplayType || 'wan'
             };
         }
         else if (widgetType === ITEM_TYPE.PIHOLE_WIDGET) {
@@ -1406,7 +1439,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: 'primary.main'
                                         }
                                     }}
                                 />
@@ -1420,7 +1453,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: 'primary.main'
                                         }
                                     }}
                                 />
@@ -1554,6 +1587,38 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         }}
                     />
                 </Box>
+
+                <Box sx={{ width: '100%', mb: 2 }}>
+                    <CheckboxElement
+                        label='Show IP in Tooltip'
+                        name={getFieldName(position, 'showIP')}
+                        sx={{
+                            ml: 1,
+                            color: 'white',
+                            '& .MuiSvgIcon-root': { fontSize: 30 }
+                        }}
+                    />
+                </Box>
+
+                {formContext.watch(getFieldName(position, 'showIP')) && (
+                    <Box sx={{ width: '100%', mb: 2 }}>
+                        <SelectElement
+                            label='IP Display Type'
+                            name={getFieldName(position, 'ipDisplayType')}
+                            options={[
+                                { id: 'wan', label: 'WAN (Public IP)' },
+                                { id: 'lan', label: 'LAN (Local IP)' },
+                                { id: 'both', label: 'Both WAN & LAN' }
+                            ]}
+                            required
+                            fullWidth
+                            sx={selectStyling}
+                            slotProps={{
+                                inputLabel: { style: { color: theme.palette.text.primary } }
+                            }}
+                        />
+                    </Box>
+                )}
             </>
         );
     };
@@ -1659,7 +1724,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: 'primary.main'
                                         }
                                     }}
                                 />
@@ -1673,7 +1738,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: 'primary.main'
                                         }
                                     }}
                                 />
@@ -1693,44 +1758,13 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
 
     // Wrapper for DateTime widget config with position-specific field names
     const DateTimeConfigWrapper = ({ position }: { position: 'top' | 'bottom' }) => {
-        // Create a wrapper context that correctly handles location and timezone updates
-        const wrapperContext = {
-            ...formContext,
-            register: (name: any, options: any) => formContext.register(getFieldName(position, name as string) as any, options),
-            watch: (name: any) => formContext.watch(getFieldName(position, name as string) as any),
-            setValue: (name: any, value: any, options: any) => {
-                // Handle timezone specially - when it's set from the API callback in DateTimeWidgetConfig
-                if (name === 'timezone') {
-                    return formContext.setValue(getFieldName(position, 'timezone') as any, value, options);
-                }
-
-                // Normal field value setting
-                return formContext.setValue(getFieldName(position, name as string) as any, value, options);
-            },
-            getValues: (name?: any) => {
-                if (name) {
-                    return formContext.getValues(getFieldName(position, name as string) as any);
-                }
-                // If no name is provided, get all values with position prefix
-                const allValues = formContext.getValues();
-                const positionValues: Record<string, any> = {};
-
-                // Filter and transform keys
-                Object.keys(allValues).forEach(key => {
-                    if (key.startsWith(`${position}_`)) {
-                        const newKey = key.replace(`${position}_`, '');
-                        positionValues[newKey] = allValues[key as keyof typeof allValues];
-                    }
-                });
-
-                return positionValues;
-            }
-        } as UseFormReturn<FormValues>;
-
         // Wrap with consistent styling to match single widget display
         return (
             <Box sx={{ width: '100%' }}>
-                <DateTimeWidgetConfig formContext={wrapperContext} />
+                <DateTimeWidgetConfig
+                    formContext={formContext as any}
+                    fieldNamePrefix={position === 'top' ? 'top_' : 'bottom_'}
+                />
             </Box>
         );
     };
@@ -1938,8 +1972,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
@@ -1969,8 +2003,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
@@ -1995,8 +2029,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                         }}
                         slotProps={{
@@ -2031,8 +2065,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
@@ -2070,8 +2104,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
@@ -2284,8 +2318,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
@@ -2315,8 +2349,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
@@ -2341,8 +2375,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                         }}
                         slotProps={{
@@ -2372,8 +2406,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
@@ -2407,8 +2441,8 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: 'primary.main' },
+                                '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
@@ -2517,16 +2551,16 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                             flex: isMobile ? 1 : 'initial',
                             minHeight: isMobile ? '42px' : '48px',
                             '&:hover': {
-                                color: theme.palette.primary.main,
+                                color: 'primary.main',
                                 opacity: 0.8
                             },
                             '&.Mui-selected': {
-                                color: theme.palette.primary.main,
+                                color: 'primary.main',
                                 fontWeight: 'bold'
                             }
                         },
                         '& .MuiTabs-indicator': {
-                            backgroundColor: theme.palette.primary.main,
+                            backgroundColor: 'primary.main',
                             height: 3
                         }
                     }}

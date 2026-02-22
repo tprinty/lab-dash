@@ -426,7 +426,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                     '& .MuiLinearProgress-bar': {
                         backgroundColor:
                             torrent.state === 'downloading' ? 'primary.main' :
-                                torrent.state.includes('seed') || torrent.state.includes('upload') ? theme.palette.primary.main :
+                                torrent.state.includes('seed') || torrent.state.includes('upload') ? 'primary.main' :
                                     torrent.progress === 1 ? 'success.main' : 'warning.main'
                     }
                 }}
@@ -482,10 +482,12 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
     const getBaseUrl = () => {
         if (!loginCredentials.host) return '';
 
+        // Strip any existing protocol prefix
+        const cleanHost = loginCredentials.host.replace(/^https?:\/\//, '');
         const protocol = loginCredentials.ssl ? 'https' : 'http';
         const port = loginCredentials.port ? `:${loginCredentials.port}` : '';
 
-        return `${protocol}://${loginCredentials.host}${port}`;
+        return `${protocol}://${cleanHost}${port}`;
     };
 
     // Handle opening the torrent client web UI

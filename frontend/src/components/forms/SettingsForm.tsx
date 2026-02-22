@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, FormControlLabel, Radio, RadioGroup, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { CheckboxElement, FormContainer, SelectElement, TextFieldElement, useForm } from 'react-hook-form-mui';
 import { FaCog } from 'react-icons/fa';
@@ -12,6 +12,7 @@ import { DashApi } from '../../api/dash-api';
 import { BACKEND_URL } from '../../constants/constants';
 import { useAppContext } from '../../context/useAppContext';
 import { COLORS } from '../../theme/styles';
+import { useThemeColor } from '../../theme/ThemeContext';
 import { Config, SearchProvider } from '../../types';
 import { PopupManager } from '../modals/PopupManager';
 import { ToastManager } from '../toast/ToastManager';
@@ -27,11 +28,16 @@ const SEARCH_PROVIDERS = [
 
 type FormValues = {
     backgroundFile: File | null,
+    backgroundImageUrl: string;
+    backgroundImageType: 'file' | 'url';
     title: string;
     search: boolean;
     searchProviderId: string;
     searchProvider?: SearchProvider;
     showInternetIndicator: boolean;
+    showIP: boolean;
+    ipDisplayType: 'wan' | 'lan' | 'both';
+    themeColor: string;
     configFile?: File | null;
     appIconFiles?: File[] | null;
 }
@@ -196,6 +202,7 @@ export const SettingsForm = () => {
     const [isCustomProvider, setIsCustomProvider] = useState(false);
     const [hasChanges, setHasChanges] = useState(false);
     const { config, updateConfig, refreshDashboard, pages } = useAppContext();
+    const { setThemeColor: updateThemeColor } = useThemeColor();
     const [tabValue, setTabValue] = useState(0);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -241,7 +248,7 @@ export const SettingsForm = () => {
                 background-color: ${COLORS.LIGHT_GRAY_HOVER} !important;
             }
             .MuiPopover-root .MuiPaper-root .MuiMenuItem-root.Mui-selected {
-                background-color: ${theme.palette.primary.main} !important;
+                background-color: ${'primary.main'} !important;
             }
             .MuiPopover-root .MuiPaper-root .MuiMenuItem-root.Mui-selected:hover {
                 background-color: ${COLORS.LIGHT_GRAY_HOVER} !important;
@@ -281,6 +288,8 @@ export const SettingsForm = () => {
     const formContext = useForm<FormValues>({
         defaultValues: {
             backgroundFile: null as File | null,
+            backgroundImageUrl: (config?.backgroundImage && config.backgroundImage.startsWith('http')) ? config.backgroundImage : '',
+            backgroundImageType: (config?.backgroundImage && config.backgroundImage.startsWith('http')) ? 'url' : 'file',
             title: config?.title || '',
             search: config?.search || false,
             searchProviderId: initialProviderId,
@@ -297,18 +306,26 @@ export const SettingsForm = () => {
                         : ''
             },
             showInternetIndicator: config?.showInternetIndicator !== false, // Default to true
+            showIP: config?.showIP ?? (config as any)?.showPublicIP ?? false,
+            ipDisplayType: config?.ipDisplayType || 'wan',
+            themeColor: config?.themeColor || '#734CDE',
             configFile: null,
             appIconFiles: null
         }
     });
 
     const backgroundFile = formContext.watch('backgroundFile', null);
+    const backgroundImageUrl = formContext.watch('backgroundImageUrl', '');
+    const backgroundImageType = formContext.watch('backgroundImageType', 'file');
     const searchProviderId = formContext.watch('searchProviderId', 'google');
     const searchEnabled = formContext.watch('search', false);
     const title = formContext.watch('title', '');
     const searchProviderName = formContext.watch('searchProvider.name', '');
     const searchProviderUrl = formContext.watch('searchProvider.url', '');
     const showInternetIndicator = formContext.watch('showInternetIndicator', true);
+    const showIP = formContext.watch('showIP', false);
+    const ipDisplayType = formContext.watch('ipDisplayType', 'wan');
+    const themeColor = formContext.watch('themeColor', '#734CDE');
     const configFile = formContext.watch('configFile', null);
     const appIconFiles = formContext.watch('appIconFiles', null);
 
@@ -349,8 +366,12 @@ export const SettingsForm = () => {
             // Title change
             if (title !== (config?.title || 'Lab Dash')) return true;
 
-            // Background image change
-            if (backgroundFile) return true;
+            // Background image change (file or URL)
+            if (backgroundImageType === 'file' && backgroundFile) return true;
+            if (backgroundImageType === 'url') {
+                const currentUrl = (config?.backgroundImage && config.backgroundImage.startsWith('http')) ? config.backgroundImage : '';
+                if (backgroundImageUrl !== currentUrl) return true;
+            }
 
             // App icon files change
             if (appIconFiles && appIconFiles.length > 0) return true;
@@ -360,6 +381,15 @@ export const SettingsForm = () => {
 
             // Internet indicator change
             if (showInternetIndicator !== (config?.showInternetIndicator !== false)) return true;
+
+            // Show IP change
+            if (showIP !== (config?.showIP ?? (config as any)?.showPublicIP ?? false)) return true;
+
+            // IP display type change
+            if (ipDisplayType !== (config?.ipDisplayType || 'wan')) return true;
+
+            // Theme color change
+            if (themeColor !== (config?.themeColor || '#734CDE')) return true;
 
             // Search provider changes
             if (searchEnabled) {
@@ -396,12 +426,17 @@ export const SettingsForm = () => {
     }, [
         title,
         backgroundFile,
+        backgroundImageUrl,
+        backgroundImageType,
         appIconFiles,
         searchEnabled,
         searchProviderId,
         searchProviderName,
         searchProviderUrl,
         showInternetIndicator,
+        showIP,
+        ipDisplayType,
+        themeColor,
         config
     ]);
 
@@ -415,8 +450,11 @@ export const SettingsForm = () => {
 
             const updatedConfig: Partial<Config> = {};
 
-            if (data.backgroundFile instanceof File) {
+            // Handle background image based on type
+            if (data.backgroundImageType === 'file' && data.backgroundFile instanceof File) {
                 updatedConfig.backgroundImage = data.backgroundFile;
+            } else if (data.backgroundImageType === 'url' && data.backgroundImageUrl?.trim()) {
+                updatedConfig.backgroundImage = data.backgroundImageUrl.trim();
             }
 
             if (data.title.trim()) {
@@ -431,6 +469,21 @@ export const SettingsForm = () => {
 
             if (data.showInternetIndicator !== undefined) {
                 updatedConfig.showInternetIndicator = data.showInternetIndicator;
+            }
+
+            if (data.showIP !== undefined) {
+                updatedConfig.showIP = data.showIP;
+                // Remove old field name if it exists
+                delete (updatedConfig as any).showPublicIP;
+            }
+
+            if (data.ipDisplayType !== undefined) {
+                updatedConfig.ipDisplayType = data.ipDisplayType;
+            }
+
+            // Handle theme color
+            if (data.themeColor && data.themeColor !== config?.themeColor) {
+                updatedConfig.themeColor = data.themeColor;
             }
 
             // Handle search provider if search is enabled
@@ -548,6 +601,8 @@ export const SettingsForm = () => {
 
                 formContext.reset({
                     backgroundFile: null,
+                    backgroundImageUrl: (refreshedConfig?.backgroundImage && refreshedConfig.backgroundImage.startsWith('http')) ? refreshedConfig.backgroundImage : '',
+                    backgroundImageType: (refreshedConfig?.backgroundImage && refreshedConfig.backgroundImage.startsWith('http')) ? 'url' : 'file',
                     title: refreshedConfig?.title || '',
                     search: refreshedConfig?.search || false,
                     searchProviderId: savedSearchProviderId,
@@ -556,8 +611,16 @@ export const SettingsForm = () => {
                         url: refreshedConfig?.searchProvider?.url || ''
                     },
                     showInternetIndicator: refreshedConfig?.showInternetIndicator !== false,
+                    showIP: refreshedConfig?.showIP ?? (refreshedConfig as any)?.showPublicIP ?? false,
+                    ipDisplayType: refreshedConfig?.ipDisplayType || 'wan',
+                    themeColor: refreshedConfig?.themeColor || '#734CDE',
                     appIconFiles: null
                 });
+
+                // If theme color was changed, update the theme immediately
+                if (updatedConfig.themeColor) {
+                    updateThemeColor(updatedConfig.themeColor);
+                }
             }
         } catch (error) {
             // Show error message
@@ -762,6 +825,47 @@ export const SettingsForm = () => {
                                     />
                                 </Box>
 
+                                <Typography variant='body1' sx={{
+                                    alignSelf: 'center',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' }
+                                }}>Show IP in Tooltip</Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <CheckboxElement
+                                        name='showIP'
+                                        sx={{ color: 'text.primary' }}
+                                    />
+                                </Box>
+
+                                {showIP && (
+                                    <>
+                                        <Typography variant='body1' sx={{
+                                            alignSelf: 'center',
+                                            fontSize: { xs: '0.875rem', sm: '1rem' }
+                                        }}>IP Display Type</Typography>
+                                        <Box>
+                                            <SelectElement
+                                                name='ipDisplayType'
+                                                options={[
+                                                    { id: 'wan', label: 'WAN (Public IP)' },
+                                                    { id: 'lan', label: 'LAN (Local IP)' },
+                                                    { id: 'both', label: 'Both WAN & LAN' }
+                                                ]}
+                                                valueKey='id'
+                                                labelKey='label'
+                                                sx={{
+                                                    '& .MuiOutlinedInput-root': {
+                                                        '& fieldset': { borderColor: theme.palette.text.primary },
+                                                        '&:hover fieldset': { borderColor: 'primary.main' },
+                                                        '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+                                                    },
+                                                    '.MuiSvgIcon-root ': { fill: theme.palette.text.primary },
+                                                    width: '95%'
+                                                }}
+                                            />
+                                        </Box>
+                                    </>
+                                )}
+
                                 {searchEnabled && (
                                     <>
                                         <Typography variant='body1' sx={{
@@ -783,8 +887,8 @@ export const SettingsForm = () => {
                                                 sx={{
                                                     '& .MuiOutlinedInput-root': {
                                                         '& fieldset': { borderColor: theme.palette.text.primary },
-                                                        '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                                        '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                                                        '&:hover fieldset': { borderColor: 'primary.main' },
+                                                        '&.Mui-focused fieldset': { borderColor: 'primary.main' },
                                                     },
                                                     '.MuiSvgIcon-root ': { fill: theme.palette.text.primary },
                                                     width: '95%'
@@ -911,27 +1015,146 @@ export const SettingsForm = () => {
                                 <Typography variant='body1' sx={{
                                     alignSelf: 'center',
                                     fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}>Background Image</Typography>
-                                <Box sx={{ position: 'relative' }}>
-                                    <FileInput
-                                        name='backgroundFile'
-                                        sx={{ width: '95%' }}
-                                    />
-                                    {backgroundFile && (
-                                        <Tooltip title='Clear'>
-                                            <CloseIcon
-                                                onClick={() => formContext.resetField('backgroundFile')}
-                                                sx={{
-                                                    position: 'absolute',
-                                                    right: '10px',
-                                                    top: '50%',
-                                                    transform: 'translateY(-50%)',
+                                }}>Accent Color</Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                    <TextFieldElement
+                                        name='themeColor'
+                                        type='color'
+                                        sx={{
+                                            width: '40px',
+                                            '& .MuiOutlinedInput-root': {
+                                                height: '40px',
+                                                padding: 0,
+                                                '& fieldset': {
+                                                    border: '2px solid rgba(255, 255, 255, 0.23)'
+                                                },
+                                                '& input[type="color"]': {
                                                     cursor: 'pointer',
-                                                    fontSize: 22,
-                                                    color: 'rgba(255, 255, 255, 0.7)',
-                                                }}
+                                                    border: 'none',
+                                                    padding: 0,
+                                                    margin: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    borderRadius: '4px',
+                                                    '&::-webkit-color-swatch-wrapper': {
+                                                        padding: 0
+                                                    },
+                                                    '&::-webkit-color-swatch': {
+                                                        border: 'none',
+                                                        borderRadius: '4px'
+                                                    },
+                                                    '&::-moz-color-swatch': {
+                                                        border: 'none',
+                                                        borderRadius: '4px'
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                    />
+                                    <Typography sx={{ color: 'text.primary' }}>
+                                        {themeColor}
+                                    </Typography>
+                                    <Button
+                                        variant='contained'
+                                        size='small'
+                                        onClick={() => formContext.setValue('themeColor', '#734CDE')}
+                                        sx={{ fontSize: '0.75rem' }}
+                                    >
+                                        Reset to Default
+                                    </Button>
+                                </Box>
+
+                                <Typography variant='body1' sx={{
+                                    alignSelf: 'center',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' }
+                                }}>Background Image</Typography>
+                                <Box>
+                                    <RadioGroup
+                                        name='backgroundImageType'
+                                        value={backgroundImageType}
+                                        onChange={(e) => {
+                                            formContext.setValue('backgroundImageType', e.target.value as 'file' | 'url');
+                                        }}
+                                        sx={{
+                                            flexDirection: 'row',
+                                            mb: 1,
+                                            '& .MuiFormControlLabel-label': {
+                                                color: 'white'
+                                            }
+                                        }}
+                                    >
+                                        <FormControlLabel
+                                            value='file'
+                                            control={
+                                                <Radio
+                                                    sx={{
+                                                        color: 'white',
+                                                        '&.Mui-checked': {
+                                                            color: 'primary.main'
+                                                        }
+                                                    }}
+                                                />
+                                            }
+                                            label='Upload File'
+                                        />
+                                        <FormControlLabel
+                                            value='url'
+                                            control={
+                                                <Radio
+                                                    sx={{
+                                                        color: 'white',
+                                                        '&.Mui-checked': {
+                                                            color: 'primary.main'
+                                                        }
+                                                    }}
+                                                />
+                                            }
+                                            label='Use URL'
+                                        />
+                                    </RadioGroup>
+
+                                    {backgroundImageType === 'file' ? (
+                                        <Box sx={{ position: 'relative' }}>
+                                            <FileInput
+                                                name='backgroundFile'
+                                                sx={{ width: '95%' }}
                                             />
-                                        </Tooltip>
+                                            {backgroundFile && (
+                                                <Tooltip title='Clear'>
+                                                    <CloseIcon
+                                                        onClick={() => formContext.resetField('backgroundFile')}
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            right: '10px',
+                                                            top: '50%',
+                                                            transform: 'translateY(-50%)',
+                                                            cursor: 'pointer',
+                                                            fontSize: 22,
+                                                            color: 'rgba(255, 255, 255, 0.7)',
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            )}
+                                        </Box>
+                                    ) : (
+                                        <TextFieldElement
+                                            name='backgroundImageUrl'
+                                            placeholder='https://example.com/image.jpg'
+                                            fullWidth
+                                            sx={{
+                                                width: '95%',
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': {
+                                                        borderColor: 'text.primary',
+                                                    },
+                                                    '&:hover fieldset': { borderColor: 'primary.main' },
+                                                    '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+                                                },
+                                            }}
+                                            slotProps={{
+                                                inputLabel: { style: { color: 'white' } }
+                                            }}
+                                        />
                                     )}
                                 </Box>
 

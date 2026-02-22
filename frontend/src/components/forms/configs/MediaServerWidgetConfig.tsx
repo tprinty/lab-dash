@@ -9,6 +9,7 @@ import { FormValues } from '../AddEditForm/types';
 
 const MEDIA_SERVER_OPTIONS = [
     { id: 'jellyfin', label: 'Jellyfin' },
+    { id: 'emby', label: 'Emby' },
     // { id: 'plex', label: 'Plex (Coming Soon)' }
 ];
 
@@ -30,8 +31,8 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
             '& fieldset': {
                 borderColor: 'text.primary',
             },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+            '&:hover fieldset': { borderColor: 'primary.main' },
+            '&.Mui-focused fieldset': { borderColor: 'primary.main' },
         },
         width: '100%',
         minWidth: isMobile ? '50vw' : '20vw'
@@ -46,6 +47,14 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
             if (!currentPort || currentPort === '') {
                 const defaultPort = watchedMediaServerType === 'plex' ? '32400' : '8096';
                 formContext.setValue('msPort', defaultPort);
+            }
+
+            // Set default display name if there's no existing name value (for new widgets)
+            const currentName = formContext.getValues('mediaServerName');
+            if (!currentName || currentName === '') {
+                const defaultName = watchedMediaServerType === 'plex' ? 'Plex' :
+                    watchedMediaServerType === 'emby' ? 'Emby' : 'Jellyfin';
+                formContext.setValue('mediaServerName', defaultName);
             }
         }
     }, [watchedMediaServerType, formContext]);
@@ -68,8 +77,14 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                         name='mediaServerType'
                         value={mediaServerType}
                         onChange={(e) => {
-                            setMediaServerType(e.target.value);
-                            formContext.setValue('mediaServerType', e.target.value);
+                            const newType = e.target.value;
+                            setMediaServerType(newType);
+                            formContext.setValue('mediaServerType', newType);
+
+                            // Update display name based on selected type
+                            const displayName = newType === 'plex' ? 'Plex' :
+                                newType === 'emby' ? 'Emby' : 'Jellyfin';
+                            formContext.setValue('mediaServerName', displayName);
                         }}
                         sx={{
                             flexDirection: 'row',
@@ -88,7 +103,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                                         sx={{
                                             color: 'white',
                                             '&.Mui-checked': {
-                                                color: theme.palette.primary.main
+                                                color: 'primary.main'
                                             }
                                         }}
                                     />

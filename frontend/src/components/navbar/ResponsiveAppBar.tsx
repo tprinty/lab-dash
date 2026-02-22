@@ -54,6 +54,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
     const [openVersionModal, setOpenVersionModal] = useState(false);
     const [internetTooltipOpen, setInternetTooltipOpen] = useState(false);
+    const [ipAddress, setIPAddress] = useState<{ wan?: string | null; lan?: string | null } | string | null>(null);
     const [originalLayoutSnapshot, setOriginalLayoutSnapshot] = useState<DashboardItem[] | null>(null);
 
     const { internetStatus } = useInternetStatus();
@@ -83,6 +84,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     } = useAppContext();
 
     const showInternetIndicator = config?.showInternetIndicator !== false;
+    const showIP = config?.showIP ?? (config as any)?.showPublicIP ?? false;
+    const ipDisplayType = config?.ipDisplayType || 'wan';
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -109,6 +112,27 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     useEffect(() => {
         setInternetTooltipOpen(false);
     }, [editMode]);
+
+    // Fetch IP addresses when showIP is enabled
+    useEffect(() => {
+        if (showIP && internetStatus === 'online') {
+            const fetchIPs = async () => {
+                const ips = await DashApi.getIPAddresses();
+                const ipType = config?.ipDisplayType || 'wan';
+
+                if (ipType === 'both') {
+                    setIPAddress({ wan: ips.wan, lan: ips.lan });
+                } else if (ipType === 'lan') {
+                    setIPAddress(ips.lan);
+                } else {
+                    setIPAddress(ips.wan);
+                }
+            };
+            fetchIPs();
+        } else {
+            setIPAddress(null);
+        }
+    }, [showIP, internetStatus, config?.ipDisplayType]);
 
     const handleClose = () => setOpenAddModal(false);
     const handleCloseEditPage = () => {
@@ -142,14 +166,14 @@ export const ResponsiveAppBar = ({ children }: Props) => {
         // Only save if there were actual changes made
         if (originalLayoutSnapshot) {
             const hasChanges = JSON.stringify(originalLayoutSnapshot) !== JSON.stringify(dashboardLayout);
-            
+
             if (hasChanges) {
                 console.log('Layout changes detected, saving...');
                 saveLayout(dashboardLayout);
             } else {
                 console.log('No layout changes detected, skipping save');
             }
-            
+
             // Clear the snapshot
             setOriginalLayoutSnapshot(null);
         } else {
@@ -407,7 +431,37 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                 {!editMode && showInternetIndicator && (
                                     <Tooltip
                                         key='internet-tooltip'
-                                        title={internetStatus === 'online' ? 'Internet Connected' : internetStatus === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
+                                        title={
+                                            <Box>
+                                                <Typography variant='body2' sx={{ textAlign: 'center' }}>
+                                                    {internetStatus === 'online' ? 'Internet Connected' : internetStatus === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
+                                                </Typography>
+                                                {showIP && ipAddress && internetStatus === 'online' && (
+                                                    <Box sx={{ mt: 0.5 }}>
+                                                        {typeof ipAddress === 'object' ? (
+                                                            <>
+                                                                {ipAddress.wan && (
+                                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+                                                                        <Typography variant='caption'>WAN:</Typography>
+                                                                        <Typography variant='caption'>{ipAddress.wan}</Typography>
+                                                                    </Box>
+                                                                )}
+                                                                {ipAddress.lan && (
+                                                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+                                                                        <Typography variant='caption'>LAN:</Typography>
+                                                                        <Typography variant='caption'>{ipAddress.lan}</Typography>
+                                                                    </Box>
+                                                                )}
+                                                            </>
+                                                        ) : (
+                                                            <Typography variant='caption' sx={{ display: 'block', textAlign: 'right' }}>
+                                                                {(config?.ipDisplayType || 'wan') === 'wan' ? 'WAN: ' : 'LAN: '}{ipAddress}
+                                                            </Typography>
+                                                        )}
+                                                    </Box>
+                                                )}
+                                            </Box>
+                                        }
                                         placement='left'
                                         arrow
                                         open={Boolean(internetTooltipOpen)}
@@ -419,7 +473,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         disableFocusListener
                                         disableTouchListener
                                         PopperProps={{
-                                            disablePortal: true,
+                                            disablePortal: false,
                                         }}
                                         slotProps={{
                                             tooltip: {

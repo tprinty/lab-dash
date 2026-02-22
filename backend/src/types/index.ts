@@ -38,6 +38,10 @@ export type Config = {
     isSetupComplete?: boolean;
     lastSeenVersion?: string;
     notes?: Note[];
+    themeColor?: string;
+    showInternetIndicator?: boolean;
+    showIP?: boolean;
+    ipDisplayType?: 'wan' | 'lan' | 'both';
 }
 
 export type Note = {

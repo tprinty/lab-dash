@@ -97,9 +97,12 @@ export type Config = {
     search?: boolean;
     searchProvider?: SearchProvider;
     showInternetIndicator?: boolean;
+    showIP?: boolean;
+    ipDisplayType?: 'wan' | 'lan' | 'both';
     isSetupComplete?: boolean;
     lastSeenVersion?: string;
     defaultNoteFontSize?: string;
+    themeColor?: string;
 }
 
 export type UploadImageResponse = {

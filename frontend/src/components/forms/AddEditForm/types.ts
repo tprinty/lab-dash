@@ -20,6 +20,8 @@ export type FormValues = {
     showDiskUsage?: boolean;
     showSystemInfo?: boolean;
     showInternetStatus?: boolean;
+    showIP?: boolean;
+    ipDisplayType?: 'wan' | 'lan' | 'both';
     // Disk monitor widget
     selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
     showIcons?: boolean;
@@ -28,6 +30,7 @@ export type FormValues = {
     layout?: '2x2' | '2x4' | '1x6';
     // DateTime widget
     timezone?: string;
+    use24Hour?: boolean;
     // Pihole widget
     piholeUrl?: string;
     piholeApiKey?: string;
@@ -144,6 +147,7 @@ export type FormValues = {
     top_temperatureUnit?: string;
     top_location?: { name: string; latitude: number; longitude: number } | null;
     top_timezone?: string;
+    top_use24Hour?: boolean;
     top_gauge1?: string;
     top_gauge2?: string;
     top_gauge3?: string;
@@ -151,6 +155,8 @@ export type FormValues = {
     top_showDiskUsage?: boolean;
     top_showSystemInfo?: boolean;
     top_showInternetStatus?: boolean;
+    top_showIP?: boolean;
+    top_ipDisplayType?: 'wan' | 'lan' | 'both';
     top_selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
     top_showIcons?: boolean;
     top_showMountPath?: boolean;
@@ -173,6 +179,7 @@ export type FormValues = {
     bottom_temperatureUnit?: string;
     bottom_location?: { name: string; latitude: number; longitude: number } | null;
     bottom_timezone?: string;
+    bottom_use24Hour?: boolean;
     bottom_gauge1?: string;
     bottom_gauge2?: string;
     bottom_gauge3?: string;
@@ -180,6 +187,8 @@ export type FormValues = {
     bottom_showDiskUsage?: boolean;
     bottom_showSystemInfo?: boolean;
     bottom_showInternetStatus?: boolean;
+    bottom_showIP?: boolean;
+    bottom_ipDisplayType?: 'wan' | 'lan' | 'both';
     bottom_selectedDisks?: Array<{ mount: string; customName: string; showMountPath?: boolean }>;
     bottom_showIcons?: boolean;
     bottom_showMountPath?: boolean;
