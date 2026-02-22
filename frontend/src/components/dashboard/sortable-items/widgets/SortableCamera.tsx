@@ -32,7 +32,7 @@ export const SortableCamera: React.FC<Props> = ({ id, editMode, isOverlay = fals
                 visibility: isDragging ? 'hidden' : 'visible'
             }}
         >
-            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
+            <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate} customHeight={{ xs: '24rem', sm: '24rem', md: '24rem' }}>
                 <CameraWidget config={config} />
             </WidgetContainer>
         </Grid2>
