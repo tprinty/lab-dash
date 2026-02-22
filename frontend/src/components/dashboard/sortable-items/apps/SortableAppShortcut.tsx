@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Grid2 } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 
 import { ITEM_TYPE } from '../../../../types';
@@ -57,12 +57,12 @@ export const SortableAppShortcut: React.FC<Props> = ({
     const statusUrl = healthUrl || url;
 
     return (
-        <Grid2
-            size={{ xs: 4, sm: 4, md: 2, lg: 4 / 3, xl: 4 / 3 }}
+        <Box
             ref={!isOverlay ? setNodeRef : undefined}
             {...(!isOverlay ? attributes : {})}
             {...(!isOverlay ? listeners : {})}
             sx={{
+                gridColumn: { xs: 'span 4', sm: 'span 3', md: 'span 2', lg: 'span 1', xl: 'span 1' },
                 transition: isDragging ? 'none' : transition,
                 transform: transform ? CSS.Translate.toString(transform) : undefined,
                 opacity: isOverlay ? 0.6 : (isDragging ? 0 : 1),
@@ -92,6 +92,6 @@ export const SortableAppShortcut: React.FC<Props> = ({
                     isPreview={isPreview}
                 />
             </WidgetContainer>
-        </Grid2>
+        </Box>
     );
 };

@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Box, Grid2, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 
 import { WidgetContainer } from '../widgets/WidgetContainer';
@@ -20,12 +20,12 @@ export const BlankWidget: React.FC<Props> = ({ id, label, editMode, isOverlay = 
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
-        <Grid2
-            size={{ xs: 12, sm: row ? 12 : 6, md: row ? 12 : 6, lg: row ? 12 : 4 }}
+        <Box
             ref={!isOverlay ? setNodeRef : undefined}
             {...(!isOverlay ? attributes : {})}
             {...(!isOverlay ? listeners : {})}
             sx={{
+                gridColumn: row ? 'span 12' : { xs: 'span 12', sm: 'span 6', lg: 'span 4' },
                 opacity: isOverlay ? .6 : 1,
                 transition,
                 transform: transform ? CSS.Translate.toString(transform) : undefined,
@@ -37,6 +37,6 @@ export const BlankWidget: React.FC<Props> = ({ id, label, editMode, isOverlay = 
                     {/* {label} */}
                 </Typography>
             </WidgetContainer>
-        </Grid2>
+        </Box>
     );
 };

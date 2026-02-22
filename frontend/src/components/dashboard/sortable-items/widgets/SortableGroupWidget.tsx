@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Grid2 } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import shortid from 'shortid';
 
@@ -877,9 +877,9 @@ export const SortableGroupWidget: React.FC<Props> = ({
 
     if (isOverlay) {
         return (
-            <Grid2
-                size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 4 }}
+            <Box
                 sx={{
+                    gridColumn: { xs: 'span 12', sm: 'span 6', lg: 'span 4' },
                     opacity: 0.6,
                     height: widgetHeight.sm,
                     minHeight: widgetHeight.sm,
@@ -901,15 +901,14 @@ export const SortableGroupWidget: React.FC<Props> = ({
                     maxItems={getMaxItems()}
                     showLabel={config?.showLabel !== undefined ? config.showLabel : true}
                 />
-            </Grid2>
+            </Box>
         );
     }
 
     return (
         <>
-            <Grid2
-                size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 4 }}
-                ref={(node) => {
+            <Box
+                ref={(node: HTMLDivElement | null) => {
                     groupWidgetRef.current = node;
                     setNodeRef(node);
                     setDroppableRef(node);
@@ -917,6 +916,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
                 {...attributes}
                 {...listeners}
                 sx={{
+                    gridColumn: { xs: 'span 12', sm: 'span 6', lg: 'span 4' },
                     transform: transform ? CSS.Translate.toString(transform) : undefined,
                     opacity: isDragging ? 0.5 : 1,
                     visibility: isDragging ? 'hidden' : 'visible',
@@ -966,7 +966,7 @@ export const SortableGroupWidget: React.FC<Props> = ({
                         showLabel={config?.showLabel !== undefined ? config.showLabel : true}
                     />
                 </div>
-            </Grid2>
+            </Box>
 
             {/* Modal for editing group items */}
             <CenteredModal

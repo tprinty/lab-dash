@@ -13,7 +13,7 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable';
-import { Box, Grid2 as Grid, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import shortid from 'shortid';
 
@@ -884,15 +884,19 @@ export const DashboardGrid: React.FC = () => {
                         ref={containerRef}
                         sx={{ width: '100%', maxWidth: '100vw', boxSizing: 'border-box' }}
                     >
-                        <Grid container sx={{
+                        <Box sx={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(12, 1fr)',
+                            gridAutoFlow: 'dense',
+                            gap: 2,
                             width: '100%',
                             maxWidth: '100%',
                             boxSizing: 'border-box',
                             px: 2,
-                            paddingBottom: 4
-                        }} spacing={2}>
+                            pb: 4
+                        }}>
                             {renderItems()}
-                        </Grid>
+                        </Box>
                     </Box>
                 </SortableContext>
 

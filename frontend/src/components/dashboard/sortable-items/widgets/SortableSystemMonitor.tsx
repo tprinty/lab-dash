@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Grid2 } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 
 import { SystemMonitorWidget } from '../../base-items/widgets/SystemMonitorWidget/SystemMonitorWidget';
@@ -23,12 +23,12 @@ export const SortableSystemMonitorWidget: React.FC<Props> = ({ id, editMode, isO
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
-        <Grid2
-            size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 4 }}
+        <Box
             ref={!isOverlay ? setNodeRef : undefined}
             {...(!isOverlay ? attributes : {})}
             {...(!isOverlay ? listeners : {})}
             sx={{
+                gridColumn: { xs: "span 12", sm: "span 6", lg: "span 4" },
                 transition,
                 transform: transform ? CSS.Translate.toString(transform) : undefined,
                 opacity: isOverlay ? .6 : 1,
@@ -38,6 +38,6 @@ export const SortableSystemMonitorWidget: React.FC<Props> = ({ id, editMode, isO
             <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
                 <SystemMonitorWidget config={config} editMode={editMode} />
             </WidgetContainer>
-        </Grid2>
+        </Box>
     );
 };

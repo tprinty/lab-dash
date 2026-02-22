@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Grid2 } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 
 import { RadarrWidget } from '../../base-items/widgets/RadarrWidget';
@@ -28,12 +28,12 @@ export const SortableRadarr: React.FC<Props> = ({
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
     return (
-        <Grid2
-            size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 4 }}
+        <Box
             ref={!isOverlay ? setNodeRef : undefined}
             {...(!isOverlay ? attributes : {})}
             {...(!isOverlay ? listeners : {})}
             sx={{
+                gridColumn: { xs: "span 12", sm: "span 6", lg: "span 4" },
                 transition,
                 transform: transform ? CSS.Translate.toString(transform) : undefined,
                 opacity: isOverlay ? .6 : 1,
@@ -43,6 +43,6 @@ export const SortableRadarr: React.FC<Props> = ({
             <WidgetContainer editMode={editMode} id={id} onDelete={onDelete} onEdit={onEdit} onDuplicate={onDuplicate}>
                 <RadarrWidget config={config} id={id} />
             </WidgetContainer>
-        </Grid2>
+        </Box>
     );
 };
