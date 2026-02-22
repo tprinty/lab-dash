@@ -2473,6 +2473,19 @@ export class DashApi {
         }
     }
 
+    // EAC Business Widget methods
+    public static async getEacData(config: { dbHost?: string; dbPort?: number; clients?: any[]; revenueTarget?: number }): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/eac/data`, config, {
+                timeout: 15000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching EAC data:', error);
+            throw error;
+        }
+    }
+
     // Market Widget methods
     public static async getMarketData(enabledAssets?: string[]): Promise<any> {
         try {

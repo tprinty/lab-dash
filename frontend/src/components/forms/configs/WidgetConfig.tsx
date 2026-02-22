@@ -6,6 +6,7 @@ import { DiskMonitorWidgetConfig } from './DiskMonitorWidgetConfig';
 import { CameraWidgetConfig } from './CameraWidgetConfig';
 import { MarketWidgetConfig } from './MarketWidgetConfig';
 import { SprintWidgetConfig } from './SprintWidgetConfig';
+import { EacWidgetConfig } from './EacWidgetConfig';
 import { FinanceWidgetConfig } from './FinanceWidgetConfig';
 import { DownloadClientWidgetConfig } from './DownloadClientWidgetConfig';
 import { DualWidgetConfig } from './DualWidgetConfig';
@@ -73,6 +74,8 @@ export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetCo
         return <SprintWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.GITHUB_WIDGET:
         return <GitHubWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.EAC_WIDGET:
+        return <EacWidgetConfig formContext={formContext} />;
     default:
         return null;
     }

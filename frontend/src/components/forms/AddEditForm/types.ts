@@ -86,6 +86,13 @@ export type FormValues = {
     financeCsvPath?: string;
     financeRefreshInterval?: number;
 
+    // EAC Business widget
+    eacDbHost?: string;
+    eacDbPort?: string;
+    eacClientsJson?: string;
+    eacRevenueTarget?: string;
+    eacRefreshInterval?: number;
+
     // Market Widget
     marketRefreshInterval?: number;
     marketAsset__GSPC?: boolean;
