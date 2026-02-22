@@ -96,6 +96,14 @@ export type FormValues = {
     eacRevenueTarget?: string;
     eacRefreshInterval?: number;
 
+    // Proxmox & Docker widget
+    proxmoxHost?: string;
+    proxmoxPort?: string;
+    proxmoxTokenId?: string;
+    proxmoxTokenSecret?: string;
+    proxmoxDockerHost?: string;
+    proxmoxRefreshInterval?: number;
+
     // Market Widget
     marketRefreshInterval?: number;
     marketAsset__GSPC?: boolean;

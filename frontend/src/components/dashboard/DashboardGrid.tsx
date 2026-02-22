@@ -37,6 +37,7 @@ import { SortableCamera } from './sortable-items/widgets/SortableCamera';
 import { SortableFinance } from './sortable-items/widgets/SortableFinance';
 import { SortableMarket } from './sortable-items/widgets/SortableMarket';
 import { SortableEac } from './sortable-items/widgets/SortableEac';
+import { SortableProxmox } from './sortable-items/widgets/SortableProxmox';
 import { SortableSprint } from './sortable-items/widgets/SortableSprint';
 import { SortableGitHub } from './sortable-items/widgets/SortableGitHub';
 import { SortableGroupWidget } from './sortable-items/widgets/SortableGroupWidget';
@@ -698,6 +699,8 @@ export const DashboardGrid: React.FC = () => {
             return <SortableSprint key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.EAC_WIDGET:
             return <SortableEac key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
+        case ITEM_TYPE.PROXMOX_WIDGET:
+            return <SortableProxmox key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.CAMERA_WIDGET:
             return <SortableCamera key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.GITHUB_WIDGET:
@@ -946,6 +949,8 @@ export const DashboardGrid: React.FC = () => {
                                         return <SortableSprint key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.EAC_WIDGET:
                                         return <SortableEac key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
+                                    case ITEM_TYPE.PROXMOX_WIDGET:
+                                        return <SortableProxmox key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.CAMERA_WIDGET:
                                         return <SortableCamera key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.GITHUB_WIDGET:

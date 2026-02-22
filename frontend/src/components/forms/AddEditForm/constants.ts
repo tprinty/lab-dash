@@ -84,6 +84,12 @@ export const WIDGET_OPTIONS = [
         description: 'Edison Ave Consulting business metrics'
     },
     {
+        id: ITEM_TYPE.PROXMOX_WIDGET,
+        label: 'Proxmox & Docker',
+        icon: FaMicrochip,
+        description: 'Monitor Proxmox VMs and Docker containers'
+    },
+    {
         id: ITEM_TYPE.DUAL_WIDGET,
         label: 'Dual Widget',
         icon: PiSquareSplitVerticalFill,

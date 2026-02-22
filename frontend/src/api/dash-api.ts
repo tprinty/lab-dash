@@ -2582,4 +2582,17 @@ export class DashApi {
             throw error;
         }
     }
+
+    // Proxmox & Docker Widget methods
+    public static async getProxmoxData(config: { proxmoxHost?: string; proxmoxPort?: number; proxmoxTokenId?: string; proxmoxTokenSecret?: string; dockerHost?: string }): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/proxmox/data`, config, {
+                timeout: 15000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching Proxmox data:', error);
+            throw error;
+        }
+    }
 }

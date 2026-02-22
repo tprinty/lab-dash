@@ -622,6 +622,17 @@ export const createWidgetConfig = async (
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
             displayName: data.displayName || 'EAC Business'
         };
+    } else if (widgetType === ITEM_TYPE.PROXMOX_WIDGET) {
+        return {
+            proxmoxHost: data.proxmoxHost || '192.168.2.12',
+            proxmoxPort: Number(data.proxmoxPort) || 8006,
+            proxmoxTokenId: data.proxmoxTokenId || '',
+            proxmoxTokenSecret: data.proxmoxTokenSecret || '',
+            dockerHost: data.proxmoxDockerHost || '',
+            refreshInterval: data.proxmoxRefreshInterval || 60000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'Infrastructure'
+        };
     }
 
     return {};
