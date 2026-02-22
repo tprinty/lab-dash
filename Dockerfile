@@ -37,7 +37,7 @@ EXPOSE 2022
 
 # Install runtime dependencies and Python 3 for ARM
 RUN apt-get update && \
-    apt-get install -y iputils-ping lm-sensors ca-certificates && \
+    apt-get install -y iputils-ping lm-sensors ca-certificates ffmpeg && \
     ARCH=$(uname -m) && \
     echo "Detected architecture: $ARCH" && \
     if [ "$ARCH" = "armv7l" ] || [ "$ARCH" = "armhf" ] || [ "$ARCH" = "arm" ]; then \
