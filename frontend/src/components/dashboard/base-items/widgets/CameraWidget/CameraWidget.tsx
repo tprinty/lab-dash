@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DashApi } from '../../../../../api/dash-api';
 
 interface CameraWidgetProps {
+    itemId?: string;
     config?: {
         host?: string;
         port?: string;
@@ -17,7 +18,7 @@ interface CameraWidgetProps {
     };
 }
 
-export const CameraWidget: React.FC<CameraWidgetProps> = ({ config }) => {
+export const CameraWidget: React.FC<CameraWidgetProps> = ({ itemId, config }) => {
     const channels = (config?.channels || '1,2,3,4').split(',').map(c => c.trim()).filter(Boolean);
     const rotationInterval = config?.rotationInterval || 10000;
     
@@ -40,7 +41,8 @@ export const CameraWidget: React.FC<CameraWidgetProps> = ({ config }) => {
                 username: config?.username || 'admin',
                 password: config?.password || '',
                 channel,
-                subtype: config?.subtype || '1'
+                subtype: config?.subtype || '1',
+                itemId: itemId || ''
             });
             const url = URL.createObjectURL(blob);
             setImageUrl(prev => {

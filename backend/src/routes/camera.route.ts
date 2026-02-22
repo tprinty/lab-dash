@@ -2,32 +2,60 @@ import { Request, Response, Router } from 'express';
 import { execFile } from 'child_process';
 import { authenticateToken } from '../middleware/auth.middleware';
 import { decrypt } from '../utils/crypto';
+import { findItemById, getConnectionInfo } from '../utils/config-lookup';
 
 export const cameraRoute = Router();
 
-// POST /snapshot - Get a JPEG snapshot from an RTSP camera
-cameraRoute.post('/snapshot', authenticateToken, async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { host, port, username, password, channel, subtype } = req.body;
+/**
+ * Resolve camera credentials - either from request body or from server-side config
+ */
+function resolveCameraConfig(body: any) {
+    let { host, port, username, password, channel, subtype, itemId } = body;
 
-        if (!host || !channel) {
-            res.status(400).json({ error: 'host and channel are required' });
-            return;
+    // If itemId is provided, look up credentials from server-side config
+    if (itemId) {
+        const item = findItemById(itemId);
+        if (item?.config) {
+            const connInfo = getConnectionInfo(item);
+            host = host || connInfo.host;
+            port = port || connInfo.port;
+            username = username || connInfo.username;
+            password = connInfo.password || ''; // Already decrypted by getConnectionInfo
+            subtype = subtype || connInfo.subtype;
         }
+    }
 
-        const actualPort = port || '554';
-        const actualUsername = username || 'admin';
-        const actualSubtype = subtype || '1';
-
-        // Decrypt password if encrypted
-        let actualPassword = password || '';
+    // Decrypt password if still encrypted (from direct body params)
+    let actualPassword = password || '';
+    if (actualPassword.startsWith('ENC:')) {
         try {
             actualPassword = decrypt(actualPassword);
         } catch (e) {
             // Use as-is if decryption fails
         }
+    }
 
-        const rtspUrl = `rtsp://${actualUsername}:${actualPassword}@${host}:${actualPort}/cam/realmonitor?channel=${channel}&subtype=${actualSubtype}`;
+    return {
+        host: host || '192.168.2.10',
+        port: port || '554',
+        username: username || 'admin',
+        password: actualPassword,
+        channel: channel || '1',
+        subtype: subtype || '1'
+    };
+}
+
+// POST /snapshot - Get a JPEG snapshot from an RTSP camera
+cameraRoute.post('/snapshot', authenticateToken, async (req: Request, res: Response): Promise<void> => {
+    try {
+        const config = resolveCameraConfig(req.body);
+
+        if (!config.host || !req.body.channel) {
+            res.status(400).json({ error: 'host and channel are required' });
+            return;
+        }
+
+        const rtspUrl = `rtsp://${config.username}:${config.password}@${config.host}:${config.port}/cam/realmonitor?channel=${req.body.channel}&subtype=${config.subtype}`;
 
         // Use ffmpeg to grab a single frame
         const args = [
@@ -40,7 +68,7 @@ cameraRoute.post('/snapshot', authenticateToken, async (req: Request, res: Respo
             'pipe:1'
         ];
 
-        const child = execFile('ffmpeg', args, {
+        execFile('ffmpeg', args, {
             encoding: 'buffer' as any,
             timeout: 8000,
             maxBuffer: 5 * 1024 * 1024
@@ -67,24 +95,14 @@ cameraRoute.post('/snapshot', authenticateToken, async (req: Request, res: Respo
 // POST /test - Test camera connection
 cameraRoute.post('/test', authenticateToken, async (req: Request, res: Response): Promise<void> => {
     try {
-        const { host, port, username, password, channel, subtype } = req.body;
+        const config = resolveCameraConfig(req.body);
 
-        if (!host) {
+        if (!config.host) {
             res.status(400).json({ error: 'host is required' });
             return;
         }
 
-        const actualPort = port || '554';
-        const actualUsername = username || 'admin';
-        const actualSubtype = subtype || '1';
-        const actualChannel = channel || '1';
-
-        let actualPassword = password || '';
-        try {
-            actualPassword = decrypt(actualPassword);
-        } catch (e) {}
-
-        const rtspUrl = `rtsp://${actualUsername}:${actualPassword}@${host}:${actualPort}/cam/realmonitor?channel=${actualChannel}&subtype=${actualSubtype}`;
+        const rtspUrl = `rtsp://${config.username}:${config.password}@${config.host}:${config.port}/cam/realmonitor?channel=${config.channel}&subtype=${config.subtype}`;
 
         const args = [
             '-rtsp_transport', 'tcp',

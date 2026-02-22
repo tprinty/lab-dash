@@ -2522,6 +2522,7 @@ export class DashApi {
         password: string;
         channel: string;
         subtype: string;
+        itemId?: string;
     }): Promise<Blob> {
         try {
             const res = await axios.post(`${BACKEND_URL}/api/camera/snapshot`, params, {
