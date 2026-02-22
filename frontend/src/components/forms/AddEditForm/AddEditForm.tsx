@@ -433,6 +433,43 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
             } else if (data.widgetType === ITEM_TYPE.NETWORK_INFO_WIDGET) {
                 // Network Info widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.NETWORK_INFO_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.CAMERA_WIDGET) {
+                // Camera widget configuration
+                let encryptedPassword = '';
+                let hasExistingPassword = false;
+
+                if (existingItem?.config) {
+                    hasExistingPassword = !!existingItem.config._hasPassword;
+                }
+
+                if (data.cameraPassword && data.cameraPassword !== '**********') {
+                    if (!isEncrypted(data.cameraPassword)) {
+                        try {
+                            encryptedPassword = await DashApi.encryptPassword(data.cameraPassword);
+                        } catch (error) {
+                            console.error('Error encrypting camera password:', error);
+                        }
+                    } else {
+                        encryptedPassword = data.cameraPassword;
+                    }
+                }
+
+                config = {
+                    host: data.cameraHost || '192.168.2.10',
+                    port: data.cameraPort || '554',
+                    username: data.cameraUsername || 'admin',
+                    channels: data.cameraChannels || '1,2,3,4',
+                    subtype: data.cameraSubtype || '1',
+                    rotationInterval: data.cameraRotationInterval || 10000,
+                    displayName: data.displayName || '',
+                    showLabel: data.showLabel
+                };
+
+                if (encryptedPassword) {
+                    config.password = encryptedPassword;
+                } else if (hasExistingPassword) {
+                    config._hasPassword = true;
+                }
             } else if (data.widgetType === ITEM_TYPE.MARKET_WIDGET) {
                 // Market widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.MARKET_WIDGET, data, existingItem, formContext);

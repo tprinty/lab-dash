@@ -31,7 +31,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                existingItem?.type === ITEM_TYPE.GROUP_WIDGET ||
                                existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ||
                                existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ||
-                               existingItem?.type === ITEM_TYPE.MARKET_WIDGET
+                               existingItem?.type === ITEM_TYPE.MARKET_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.SPRINT_WIDGET
             ? 'widget'
             : (existingItem?.type === ITEM_TYPE.BLANK_WIDGET ||
                existingItem?.type === ITEM_TYPE.BLANK_ROW ||
@@ -61,7 +63,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ||
-                                  existingItem?.type === ITEM_TYPE.MARKET_WIDGET
+                                  existingItem?.type === ITEM_TYPE.MARKET_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.SPRINT_WIDGET
             ? (existingItem?.type === ITEM_TYPE.TORRENT_CLIENT ? ITEM_TYPE.DOWNLOAD_CLIENT : existingItem?.type)
             : existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
                                     existingItem?.type === ITEM_TYPE.GROUP_WIDGET
@@ -80,7 +84,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.GITHUB_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ||
-                                  existingItem?.type === ITEM_TYPE.MARKET_WIDGET)
+                                  existingItem?.type === ITEM_TYPE.MARKET_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.SPRINT_WIDGET)
             ? (existingItem?.config?.showLabel !== undefined ? existingItem.config.showLabel : true)
             : (existingItem?.showLabel !== undefined ? existingItem.showLabel : false);
 
@@ -230,7 +236,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                             ? (existingItem?.config?.displayName || 'Finance')
                             : existingItem?.type === ITEM_TYPE.MARKET_WIDGET
                                 ? (existingItem?.config?.displayName || 'Market')
-                                : 'Notes',
+                                : existingItem?.type === ITEM_TYPE.CAMERA_WIDGET
+                                    ? (existingItem?.config?.displayName || 'Cameras')
+                                    : existingItem?.type === ITEM_TYPE.SPRINT_WIDGET
+                                        ? (existingItem?.config?.displayName || 'Sprint')
+                                        : 'Notes',
             defaultNoteFontSize: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.defaultNoteFontSize || '16px') : '16px',
 
             // Network Info widget values
@@ -254,6 +264,15 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             sprintToken: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET && existingItem?.config?._hasToken ? '**********' : '',
             sprintRepos: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET ? (existingItem?.config?.repos || 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard') : 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard',
             sprintRefreshInterval: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET ? (existingItem?.config?.refreshInterval || 900000) : 900000,
+
+            // Camera widget values
+            cameraHost: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?.host || '192.168.2.10') : '192.168.2.10',
+            cameraPort: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?.port || '554') : '554',
+            cameraUsername: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?.username || 'admin') : 'admin',
+            cameraPassword: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?._hasPassword ? '**********' : '') : '',
+            cameraChannels: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?.channels || '1,2,3,4') : '1,2,3,4',
+            cameraSubtype: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?.subtype || '1') : '1',
+            cameraRotationInterval: existingItem?.type === ITEM_TYPE.CAMERA_WIDGET ? (existingItem?.config?.rotationInterval || 10000) : 10000,
 
             // Market widget values
             marketRefreshInterval: existingItem?.type === ITEM_TYPE.MARKET_WIDGET ? (existingItem?.config?.refreshInterval || 300000) : 300000,

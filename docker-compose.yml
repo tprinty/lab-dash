@@ -8,7 +8,7 @@ services:
       ports:
         - 2022:2022
       environment:
-        - SECRET=YOUR_SECRET_KEY # any random string for used for encryption.
+        - SECRET=oE7Y+iNzpiRyAPCuk1jLyJQRKKMVt53v5a9G3SqnCJI= # DO NOT CHANGE — config is encrypted with this key
         # You can run `openssl rand -base64 32` to generate a key
       volumes:
         - /sys:/sys:ro
