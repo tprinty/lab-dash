@@ -62,7 +62,7 @@ export const CameraWidget: React.FC<CameraWidgetProps> = ({ itemId, config }) =>
         fetchSnapshot(currentIndex);
         snapshotTimerRef.current = window.setInterval(() => {
             fetchSnapshot(currentIndex);
-        }, 1500);
+        }, 5000);
         return () => {
             if (snapshotTimerRef.current) clearInterval(snapshotTimerRef.current);
         };
