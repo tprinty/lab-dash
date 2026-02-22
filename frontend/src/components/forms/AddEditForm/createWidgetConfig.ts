@@ -65,13 +65,6 @@ export const createWidgetConfig = async (
 
         return config;
     } else if (widgetType === ITEM_TYPE.DISK_MONITOR_WIDGET) {
-            selectedDisks: data.selectedDisks,
-            showIcons: data.showIcons,
-            showMountPath: data.showMountPath,
-            showName: data.showName,
-            layout: data.layout
-        });
-
         // Validate that at least one disk is selected
         if (!data.selectedDisks || !Array.isArray(data.selectedDisks) || data.selectedDisks.length === 0) {
             throw new Error('At least one disk must be selected for the Disk Monitor widget');
@@ -530,8 +523,6 @@ export const createWidgetConfig = async (
         }
 
         return config;
-    }
-
     } else if (widgetType === ITEM_TYPE.FINANCE_WIDGET) {
         return {
             csvPath: data.financeCsvPath || '/home/tprinty/clawd/data/balances.csv',
