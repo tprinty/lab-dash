@@ -6,6 +6,7 @@ import { authRoute } from './auth.route';
 import { configRoute } from './config.route';
 import { delugeRoute } from './deluge.route';
 import { cameraRoute } from './camera.route';
+import { eacRoute } from './eac.route';
 import { financeRoute } from './finance.route';
 import { marketRoute } from './market.route';
 import { githubRoute } from './github.route';
@@ -74,6 +75,9 @@ router.use('/network', apiLimiter, networkRoute);
 
 // Finance routes
 router.use('/finance', apiLimiter, financeRoute);
+
+// EAC Business routes
+router.use('/eac', apiLimiter, eacRoute);
 router.use('/market', apiLimiter, marketRoute);
 
 // Camera routes

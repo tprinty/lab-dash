@@ -21,6 +21,7 @@ import {
     FaStickyNote,
     FaTh,
     FaTv,
+    FaBriefcase,
     FaVideo
 } from 'react-icons/fa';
 import { PiSquareSplitVerticalFill } from 'react-icons/pi';
@@ -75,6 +76,12 @@ export const WIDGET_OPTIONS = [
         label: 'Sprint Tracker',
         icon: FaChartLine,
         description: 'Track sprint progress across GitHub repos'
+    },
+    {
+        id: ITEM_TYPE.EAC_WIDGET,
+        label: 'EAC Business',
+        icon: FaBriefcase,
+        description: 'Edison Ave Consulting business metrics'
     },
     {
         id: ITEM_TYPE.DUAL_WIDGET,

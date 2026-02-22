@@ -17,6 +17,7 @@ export enum ITEM_TYPE {
     CAMERA_WIDGET = 'camera-widget',
     MARKET_WIDGET = 'market-widget',
     SPRINT_WIDGET = 'sprint-widget',
+    EAC_WIDGET = 'eac-widget',
     GITHUB_WIDGET = 'github-widget',
     DUAL_WIDGET = 'dual-widget',
     GROUP_WIDGET = 'group-widget',

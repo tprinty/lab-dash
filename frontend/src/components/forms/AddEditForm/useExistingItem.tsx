@@ -260,6 +260,13 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             financeCsvPath: existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ? (existingItem?.config?.csvPath || '/home/tprinty/clawd/data/balances.csv') : '/home/tprinty/clawd/data/balances.csv',
             financeRefreshInterval: existingItem?.type === ITEM_TYPE.FINANCE_WIDGET ? (existingItem?.config?.refreshInterval || 900000) : 900000,
 
+            // EAC Business widget values
+            eacDbHost: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? (existingItem?.config?.dbHost || '127.0.0.1') : '127.0.0.1',
+            eacDbPort: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? String(existingItem?.config?.dbPort || 5436) : '5436',
+            eacClientsJson: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? JSON.stringify(existingItem?.config?.clients || [], null, 2) : '',
+            eacRevenueTarget: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? String(existingItem?.config?.revenueTarget || 40000) : '40000',
+            eacRefreshInterval: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? (existingItem?.config?.refreshInterval || 300000) : 300000,
+
             // Sprint widget values
             sprintToken: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET && existingItem?.config?._hasToken ? '**********' : '',
             sprintRepos: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET ? (existingItem?.config?.repos || 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard') : 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard',

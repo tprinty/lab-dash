@@ -603,6 +603,22 @@ export const createWidgetConfig = async (
         if (encryptedPassword) { config.password = encryptedPassword; config._hasPassword = true; }
         else if (hasExistingPassword) { config._hasPassword = true; }
         return config;
+    } else if (widgetType === ITEM_TYPE.EAC_WIDGET) {
+        let clients: any[] = [];
+        try {
+            clients = JSON.parse(data.eacClientsJson || '[]');
+        } catch (e) {
+            console.error('Error parsing EAC clients JSON:', e);
+        }
+        return {
+            dbHost: data.eacDbHost || '127.0.0.1',
+            dbPort: Number(data.eacDbPort) || 5436,
+            clients,
+            revenueTarget: Number(data.eacRevenueTarget) || 40000,
+            refreshInterval: data.eacRefreshInterval || 300000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'EAC Business'
+        };
     }
 
     return {};
