@@ -276,6 +276,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             proxmoxDockerHost: existingItem?.type === ITEM_TYPE.PROXMOX_WIDGET ? (existingItem?.config?.dockerHost || '') : '',
             proxmoxRefreshInterval: existingItem?.type === ITEM_TYPE.PROXMOX_WIDGET ? (existingItem?.config?.refreshInterval || 60000) : 60000,
 
+            // TangoPapa widget values
+            tangoPapaApiUrl: existingItem?.type === ITEM_TYPE.TANGOPAPA_WIDGET ? (existingItem?.config?.apiUrl || 'http://192.168.2.9:8088') : 'http://192.168.2.9:8088',
+            tangoPapaApiToken: existingItem?.type === ITEM_TYPE.TANGOPAPA_WIDGET ? (existingItem?.config?.apiToken || '') : '',
+            tangoPapaRefreshInterval: existingItem?.type === ITEM_TYPE.TANGOPAPA_WIDGET ? (existingItem?.config?.refreshInterval || 300000) : 300000,
+
             // Sprint widget values
             sprintToken: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET && existingItem?.config?._hasToken ? '**********' : '',
             sprintRepos: existingItem?.type === ITEM_TYPE.SPRINT_WIDGET ? (existingItem?.config?.repos || 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard') : 'tprinty/tangopapa,tprinty/wpsentinelai,tprinty/developer-metrics-dashboard',

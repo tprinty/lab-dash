@@ -8,6 +8,7 @@ import { MarketWidgetConfig } from './MarketWidgetConfig';
 import { SprintWidgetConfig } from './SprintWidgetConfig';
 import { EacWidgetConfig } from './EacWidgetConfig';
 import { ProxmoxWidgetConfig } from './ProxmoxWidgetConfig';
+import { TangoPapaWidgetConfig } from './TangoPapaWidgetConfig';
 import { FinanceWidgetConfig } from './FinanceWidgetConfig';
 import { DownloadClientWidgetConfig } from './DownloadClientWidgetConfig';
 import { DualWidgetConfig } from './DualWidgetConfig';
@@ -79,6 +80,8 @@ export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetCo
         return <EacWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.PROXMOX_WIDGET:
         return <ProxmoxWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.TANGOPAPA_WIDGET:
+        return <TangoPapaWidgetConfig formContext={formContext} />;
     default:
         return null;
     }

@@ -19,6 +19,7 @@ export enum ITEM_TYPE {
     SPRINT_WIDGET = 'sprint-widget',
     EAC_WIDGET = 'eac-widget',
     PROXMOX_WIDGET = 'proxmox-widget',
+    TANGOPAPA_WIDGET = 'tangopapa-widget',
     GITHUB_WIDGET = 'github-widget',
     DUAL_WIDGET = 'dual-widget',
     GROUP_WIDGET = 'group-widget',

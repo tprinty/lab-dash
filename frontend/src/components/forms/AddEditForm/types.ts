@@ -103,6 +103,9 @@ export type FormValues = {
     proxmoxTokenSecret?: string;
     proxmoxDockerHost?: string;
     proxmoxRefreshInterval?: number;
+    tangoPapaApiUrl?: string;
+    tangoPapaApiToken?: string;
+    tangoPapaRefreshInterval?: number;
 
     // Market Widget
     marketRefreshInterval?: number;

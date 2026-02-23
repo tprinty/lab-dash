@@ -22,6 +22,7 @@ import {
     FaTh,
     FaTv,
     FaBriefcase,
+    FaCrosshairs,
     FaVideo
 } from 'react-icons/fa';
 import { PiSquareSplitVerticalFill } from 'react-icons/pi';
@@ -88,6 +89,12 @@ export const WIDGET_OPTIONS = [
         label: 'Proxmox & Docker',
         icon: FaMicrochip,
         description: 'Monitor Proxmox VMs and Docker containers'
+    },
+    {
+        id: ITEM_TYPE.TANGOPAPA_WIDGET,
+        label: 'TangoPapa',
+        icon: FaCrosshairs,
+        description: 'Lead generation pipeline metrics'
     },
     {
         id: ITEM_TYPE.DUAL_WIDGET,

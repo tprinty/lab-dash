@@ -8,6 +8,7 @@ import { delugeRoute } from './deluge.route';
 import { cameraRoute } from './camera.route';
 import { eacRoute } from './eac.route';
 import { proxmoxRoute } from './proxmox.route';
+import { tangoPapaRoute } from './tangopapa.route';
 import { financeRoute } from './finance.route';
 import { marketRoute } from './market.route';
 import { githubRoute } from './github.route';
@@ -82,6 +83,7 @@ router.use('/eac', apiLimiter, eacRoute);
 
 // Proxmox & Docker routes
 router.use('/proxmox', apiLimiter, proxmoxRoute);
+router.use('/tangopapa', apiLimiter, tangoPapaRoute);
 router.use('/market', apiLimiter, marketRoute);
 
 // Camera routes

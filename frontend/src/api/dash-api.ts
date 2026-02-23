@@ -2595,4 +2595,16 @@ export class DashApi {
             throw error;
         }
     }
+
+    public static async getTangoPapaData(config: { apiUrl?: string; apiToken?: string }): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/tangopapa/data`, config, {
+                timeout: 15000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching TangoPapa data:', error);
+            throw error;
+        }
+    }
 }

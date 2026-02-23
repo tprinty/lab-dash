@@ -633,6 +633,14 @@ export const createWidgetConfig = async (
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
             displayName: data.displayName || 'Infrastructure'
         };
+    } else if (widgetType === ITEM_TYPE.TANGOPAPA_WIDGET) {
+        return {
+            apiUrl: data.tangoPapaApiUrl || 'http://192.168.2.9:8088',
+            apiToken: data.tangoPapaApiToken || '',
+            refreshInterval: data.tangoPapaRefreshInterval || 300000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'TangoPapa'
+        };
     }
 
     return {};
