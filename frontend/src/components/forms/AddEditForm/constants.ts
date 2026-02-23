@@ -85,6 +85,12 @@ export const WIDGET_OPTIONS = [
         description: 'Edison Ave Consulting business metrics'
     },
     {
+        id: ITEM_TYPE.WPSENTINEL_WIDGET,
+        label: 'WP Sentinel',
+        icon: FaShieldAlt,
+        description: 'WordPress site monitoring via WP Sentinel'
+    },
+    {
         id: ITEM_TYPE.PROXMOX_WIDGET,
         label: 'Proxmox & Docker',
         icon: FaMicrochip,

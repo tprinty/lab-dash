@@ -65,6 +65,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 selectedWidgetType === ITEM_TYPE.MARKET_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.SPRINT_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.EAC_WIDGET ||
+                selectedWidgetType === ITEM_TYPE.WPSENTINEL_WIDGET ||
                 selectedWidgetType === ITEM_TYPE.PROXMOX_WIDGET
             ))) {
                 if (selectedWidgetType === ITEM_TYPE.PIHOLE_WIDGET ||
@@ -81,6 +82,7 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     selectedWidgetType === ITEM_TYPE.MARKET_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.SPRINT_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.EAC_WIDGET ||
+                    selectedWidgetType === ITEM_TYPE.WPSENTINEL_WIDGET ||
                     selectedWidgetType === ITEM_TYPE.PROXMOX_WIDGET) {
                     formContext.setValue('showLabel', true);
                 } else {
@@ -489,6 +491,9 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
             } else if (data.widgetType === ITEM_TYPE.EAC_WIDGET) {
                 // EAC Business widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.EAC_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.WPSENTINEL_WIDGET) {
+                // WP Sentinel widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.WPSENTINEL_WIDGET, data, existingItem, formContext);
             } else if (data.widgetType === ITEM_TYPE.PROXMOX_WIDGET) {
                 // Proxmox & Docker widget configuration
                 config = await createWidgetConfig(ITEM_TYPE.PROXMOX_WIDGET, data, existingItem, formContext);

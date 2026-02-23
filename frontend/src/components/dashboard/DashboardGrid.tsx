@@ -37,6 +37,7 @@ import { SortableCamera } from './sortable-items/widgets/SortableCamera';
 import { SortableFinance } from './sortable-items/widgets/SortableFinance';
 import { SortableMarket } from './sortable-items/widgets/SortableMarket';
 import { SortableEac } from './sortable-items/widgets/SortableEac';
+import { SortableWpSentinel } from './sortable-items/widgets/SortableWpSentinel';
 import { SortableProxmox } from './sortable-items/widgets/SortableProxmox';
 import { SortableTangoPapa } from './sortable-items/widgets/SortableTangoPapa';
 import { SortableSprint } from './sortable-items/widgets/SortableSprint';
@@ -700,6 +701,8 @@ export const DashboardGrid: React.FC = () => {
             return <SortableSprint key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.EAC_WIDGET:
             return <SortableEac key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
+        case ITEM_TYPE.WPSENTINEL_WIDGET:
+            return <SortableWpSentinel key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.PROXMOX_WIDGET:
             return <SortableProxmox key={item.id} id={item.id} editMode={editMode} config={item.config} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.TANGOPAPA_WIDGET:
@@ -952,6 +955,8 @@ export const DashboardGrid: React.FC = () => {
                                         return <SortableSprint key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.EAC_WIDGET:
                                         return <SortableEac key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
+                                    case ITEM_TYPE.WPSENTINEL_WIDGET:
+                                        return <SortableWpSentinel key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.PROXMOX_WIDGET:
                                         return <SortableProxmox key={item.id} id={item.id} editMode={editMode} config={item.config} isOverlay />;
                                     case ITEM_TYPE.TANGOPAPA_WIDGET:

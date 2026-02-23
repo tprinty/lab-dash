@@ -7,6 +7,7 @@ import { configRoute } from './config.route';
 import { delugeRoute } from './deluge.route';
 import { cameraRoute } from './camera.route';
 import { eacRoute } from './eac.route';
+import { wpSentinelRoute } from './wpsentinel.route';
 import { proxmoxRoute } from './proxmox.route';
 import { tangoPapaRoute } from './tangopapa.route';
 import { financeRoute } from './finance.route';
@@ -80,6 +81,7 @@ router.use('/finance', apiLimiter, financeRoute);
 
 // EAC Business routes
 router.use('/eac', apiLimiter, eacRoute);
+router.use('/wpsentinel', apiLimiter, wpSentinelRoute);
 
 // Proxmox & Docker routes
 router.use('/proxmox', apiLimiter, proxmoxRoute);

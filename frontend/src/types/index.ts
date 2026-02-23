@@ -18,6 +18,7 @@ export enum ITEM_TYPE {
     MARKET_WIDGET = 'market-widget',
     SPRINT_WIDGET = 'sprint-widget',
     EAC_WIDGET = 'eac-widget',
+    WPSENTINEL_WIDGET = 'wpsentinel-widget',
     PROXMOX_WIDGET = 'proxmox-widget',
     TANGOPAPA_WIDGET = 'tangopapa-widget',
     GITHUB_WIDGET = 'github-widget',

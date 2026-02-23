@@ -268,6 +268,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             eacRevenueTarget: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? String(existingItem?.config?.revenueTarget || 40000) : '40000',
             eacRefreshInterval: existingItem?.type === ITEM_TYPE.EAC_WIDGET ? (existingItem?.config?.refreshInterval || 300000) : 300000,
 
+            // WP Sentinel widget values
+            wpSentinelApiUrl: existingItem?.type === ITEM_TYPE.WPSENTINEL_WIDGET ? (existingItem?.config?.apiUrl || 'http://192.168.2.9:8090') : 'http://192.168.2.9:8090',
+            wpSentinelApiKey: existingItem?.type === ITEM_TYPE.WPSENTINEL_WIDGET ? (existingItem?.config?.apiKey || '') : '',
+            wpSentinelRefreshInterval: existingItem?.type === ITEM_TYPE.WPSENTINEL_WIDGET ? (existingItem?.config?.refreshInterval || 300000) : 300000,
+
             // Proxmox & Docker widget values
             proxmoxHost: existingItem?.type === ITEM_TYPE.PROXMOX_WIDGET ? (existingItem?.config?.proxmoxHost || '192.168.2.12') : '192.168.2.12',
             proxmoxPort: existingItem?.type === ITEM_TYPE.PROXMOX_WIDGET ? String(existingItem?.config?.proxmoxPort || 8006) : '8006',

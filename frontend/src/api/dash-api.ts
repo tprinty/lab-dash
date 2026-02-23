@@ -2499,6 +2499,19 @@ export class DashApi {
         }
     }
 
+    // WP Sentinel Widget methods
+    public static async getWpSentinelData(config: { apiUrl?: string; apiKey?: string }): Promise<any> {
+        try {
+            const res = await axios.post(`${BACKEND_URL}/api/wpsentinel/data`, config, {
+                timeout: 15000
+            });
+            return res.data;
+        } catch (error: any) {
+            console.error('Error fetching WP Sentinel data:', error);
+            throw error;
+        }
+    }
+
     // Market Widget methods
     public static async getMarketData(enabledAssets?: string[]): Promise<any> {
         try {

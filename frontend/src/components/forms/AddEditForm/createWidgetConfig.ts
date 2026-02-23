@@ -622,6 +622,14 @@ export const createWidgetConfig = async (
             showLabel: data.showLabel !== undefined ? data.showLabel : true,
             displayName: data.displayName || 'EAC Business'
         };
+    } else if (widgetType === ITEM_TYPE.WPSENTINEL_WIDGET) {
+        return {
+            apiUrl: data.wpSentinelApiUrl || 'http://192.168.2.9:8090',
+            apiKey: data.wpSentinelApiKey || '',
+            refreshInterval: data.wpSentinelRefreshInterval || 300000,
+            showLabel: data.showLabel !== undefined ? data.showLabel : true,
+            displayName: data.displayName || 'WP Sentinel'
+        };
     } else if (widgetType === ITEM_TYPE.PROXMOX_WIDGET) {
         return {
             proxmoxHost: data.proxmoxHost || '192.168.2.12',

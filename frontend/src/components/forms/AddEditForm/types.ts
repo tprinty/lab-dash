@@ -95,6 +95,9 @@ export type FormValues = {
     eacClientsJson?: string;
     eacRevenueTarget?: string;
     eacRefreshInterval?: number;
+    wpSentinelApiUrl?: string;
+    wpSentinelApiKey?: string;
+    wpSentinelRefreshInterval?: number;
 
     // Proxmox & Docker widget
     proxmoxHost?: string;

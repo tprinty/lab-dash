@@ -7,6 +7,7 @@ import { CameraWidgetConfig } from './CameraWidgetConfig';
 import { MarketWidgetConfig } from './MarketWidgetConfig';
 import { SprintWidgetConfig } from './SprintWidgetConfig';
 import { EacWidgetConfig } from './EacWidgetConfig';
+import { WpSentinelWidgetConfig } from './WpSentinelWidgetConfig';
 import { ProxmoxWidgetConfig } from './ProxmoxWidgetConfig';
 import { TangoPapaWidgetConfig } from './TangoPapaWidgetConfig';
 import { FinanceWidgetConfig } from './FinanceWidgetConfig';
@@ -78,6 +79,8 @@ export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetCo
         return <GitHubWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.EAC_WIDGET:
         return <EacWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.WPSENTINEL_WIDGET:
+        return <WpSentinelWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.PROXMOX_WIDGET:
         return <ProxmoxWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.TANGOPAPA_WIDGET:
